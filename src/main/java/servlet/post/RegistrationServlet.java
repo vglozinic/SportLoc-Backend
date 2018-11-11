@@ -24,11 +24,9 @@ public class RegistrationServlet extends HttpServletHelper {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 	throws ServletException, IOException {
 		Gson gson = new Gson();
-		UserBean person = null;
 		JSONObject result = new JSONObject();
-		
-		person = gson.fromJson(getRequestBody(request), UserBean.class);		
-		result.put("success", (new UserModel().registerUser(person)));
+		UserBean user = gson.fromJson(getRequestBody(request), UserBean.class);		
+		result.put("success", (new UserModel().registerUser(user)));
 		sendResponse(response, result);
 	}
 
