@@ -43,5 +43,9 @@ public class Password {
 		}
 		return hash;
 	}
+	
+	public static boolean checkPassword(String password, String hash, String salt) {
+		return hash.equals(getPassword(password, salt));
+	}
 
 }

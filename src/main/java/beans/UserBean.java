@@ -58,8 +58,7 @@ public class UserBean implements Serializable {
 	}
 	
 	public String getName() {
-		name = resolveNull(name);
-		return name;
+		return resolveNull(name);
 	}
 	
 	public void setName(String name) {
@@ -67,8 +66,7 @@ public class UserBean implements Serializable {
 	}
 	
 	public String getSurname() {
-		surname = resolveNull(surname);
-		return surname;
+		return resolveNull(surname);
 	}
 	
 	public void setSurname(String surname) {
@@ -76,8 +74,7 @@ public class UserBean implements Serializable {
 	}
 	
 	public String getUsername() {
-		username = resolveNull(username);
-		return username;
+		return resolveNull(username);
 	}
 	
 	public void setUsername(String username) {
@@ -85,8 +82,7 @@ public class UserBean implements Serializable {
 	}
 	
 	public String getEmail() {
-		email = resolveNull(email);
-		return email;
+		return resolveNull(email);
 	}
 	
 	public void setEmail(String email) {
@@ -94,8 +90,7 @@ public class UserBean implements Serializable {
 	}
 	
 	public String getSalt() {
-		salt = resolveNull(salt);
-		return salt;
+		return resolveNull(salt);
 	}
 	
 	public void setSalt(String salt) {
@@ -103,8 +98,7 @@ public class UserBean implements Serializable {
 	}
 	
 	public String getPassword() {
-		password = resolveNull(password);
-		return password;
+		return resolveNull(password);
 	}
 	
 	public void setPassword(String password) {
@@ -120,8 +114,7 @@ public class UserBean implements Serializable {
 	}
 	
 	public String getDob() {
-		dob = resolveNull(dob);
-		return dob;
+		return resolveNull(dob);
 	}
 	
 	public void setDob(String dob) {
@@ -129,8 +122,7 @@ public class UserBean implements Serializable {
 	}
 	
 	public String getDescription() {
-		description = resolveNull(description); 
-		return description;
+		return resolveNull(description); 
 	}
 	
 	public void setDescription(String description) {

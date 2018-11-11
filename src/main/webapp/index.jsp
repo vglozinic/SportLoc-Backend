@@ -9,8 +9,8 @@
 		<h2>Registration</h2>
 		Requires JSON Object which contains parameters:<br>
 		<ul>
-			<li>name : example "Mišo"</li>
-			<li>surname : example "Kovač"</li>
+			<li>name : example "Miso"</li>
+			<li>surname : example "Kovac"</li>
 			<li>username : example "mkovac"</li>
 			<li>email : example "miso.kovac@host.hr"</li>
 			<li>password : example "rukeuzrak123"</li>
@@ -25,6 +25,16 @@
 	<hr>
 	<p>
 		<h2>Login</h2>
+		Requires GET parameters which are:<br>
+		<ul>
+			<li>username : example <i>mkovac</i></li>
+			<li>password : example <i>rukeuzrak123</i></li>
+
+		</ul>
+		Returns user ID for login is succussful or 0 if failed
+		<ul>
+			<li>userId : 0 or user ID (numerical value)</li>
+		</ul>
 	</p>
 </body>
 </html>
