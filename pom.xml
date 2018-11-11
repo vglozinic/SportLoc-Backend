@@ -5,7 +5,7 @@
 	<artifactId>sportloc</artifactId>
 	<packaging>jar</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>sportloc Maven Webapp</name>
+	<name>SportLoc Application</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<tomcat.version>8.5.2</tomcat.version>
@@ -43,9 +43,7 @@
 			<artifactId>tomcat-jsp-api</artifactId>
 			<version>${tomcat.version}</version>
 		</dependency>
-
-
-
+		
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
