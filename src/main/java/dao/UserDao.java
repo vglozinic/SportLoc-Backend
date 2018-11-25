@@ -16,9 +16,8 @@ public class UserDao {
 		this.daoFactory = daoFactory;
 	}
 	
-	public ResultSet checkUser(String username) {
+	public ResultSet getData(String username, String sql) {
 		ResultSet result = null;
-		String sql = "SELECT id_user FROM public.user WHERE username = ?";
 		Connection connection = daoFactory.getConnection();
 		try {
 			PreparedStatement query = connection.prepareStatement(sql);
@@ -31,19 +30,14 @@ public class UserDao {
 		return result;
 	}
 	
+	public ResultSet checkUser(String username) {
+		String sql = "SELECT id_user FROM public.user WHERE username = ?";
+		return getData(username, sql);
+	}
+	
 	public ResultSet getLoginData(String username){
-		ResultSet result = null;
 		String sql = "SELECT id_user, password, salt FROM public.user WHERE username = ?";
-		Connection connection = daoFactory.getConnection();
-		try {
-			PreparedStatement query = connection.prepareStatement(sql);
-			query.setString(1, username);
-			result = query.executeQuery();
-			connection.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return result;
+		return getData(username, sql);
 	}
 	
 	public boolean updatePassword(String salt, String hash, String email) {

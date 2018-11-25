@@ -28,15 +28,18 @@ public class UserModel {
 	private int checkLoginData(String username, String password) {
 		int result = 0;
 		ResultSet data = daoFactory.getUserDao().getLoginData(username);
-
-		try {
-			data.next();
-			if(Password.checkPassword(password, data.getString(2), data.getString(3))) {
-				result = data.getInt(1);
+		
+		if (data != null) {
+			try {
+				data.next();
+				if(Password.checkPassword(password, data.getString(2), data.getString(3))) {
+					result = data.getInt(1);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
 		}
+
 		return result;
 	}
 	
@@ -44,14 +47,17 @@ public class UserModel {
 		boolean result = false;
 		ResultSet data = daoFactory.getUserDao().checkUser(username);
 		
-		try {
-			if(data.next()) {
-				result = true;
+		if(data != null) {
+			try {
+				if(data.next()) {
+					result = true;
+				}
+			}
+			catch (SQLException e) {
+				e.printStackTrace();
 			}
 		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
+		
 		return result;
 	}
 	
