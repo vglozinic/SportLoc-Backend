@@ -19,7 +19,7 @@ public class UserBean implements Serializable {
 	
 	public UserBean () {}
 	
-	public UserBean(int userID,
+	public UserBean(int userId,
 			String name,
 			String surname,
 			String username,
@@ -30,7 +30,7 @@ public class UserBean implements Serializable {
 			String dob, 
 			String description) {
 		super();
-		this.userId = userID;
+		this.userId = userId;
 		this.name = name;
 		this.surname = surname;
 		this.username = username;

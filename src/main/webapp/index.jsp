@@ -7,8 +7,8 @@
 	<hr>
 	<p>
 		<h2>Registration</h2>
-		Path: <i>sportloc-backend.heroku.com/register</i><br>
-		Requires JSON Object which contains parameters:<br>
+		Path: <i>sportloc-backend.herokuapp.com/register</i><br>
+		Requires POST JSON Object which contains parameters:<br>
 		<ul>
 			<li>name : example "Miso"</li>
 			<li>surname : example "Kovac"</li>
@@ -26,7 +26,7 @@
 	<hr>
 	<p>
 		<h2>Login</h2>
-		Path: <i>sportloc-backend.heroku.com/login</i><br>
+		Path: <i>sportloc-backend.herokuapp.com/login</i><br>
 		Requires GET parameters which are:<br>
 		<ul>
 			<li>username : example <i>mkovac</i></li>
@@ -41,7 +41,7 @@
 	<hr>
 	<p>
 		<h2>Reset Password</h2>
-		Path: <i>sportloc-backend.heroku.com/resetPassword</i><br>
+		Path: <i>sportloc-backend.herokuapp.com/resetPassword</i><br>
 		Requires GET parametar which is:<br>
 		<ul>
 			<li>email : example <i>sample.mail@host.com</i></li>
@@ -54,7 +54,7 @@
 	<hr>
 	<p>
 		<h2>Check Username</h2>
-		Path: <i>sportloc-backend.heroku.com/checkUser</i><br>
+		Path: <i>sportloc-backend.herokuapp.com/checkUser</i><br>
 		Requires GET parametar which is:<br>
 		<ul>
 			<li>username : example <i>mkovac</i></li>
@@ -62,6 +62,26 @@
 		Returns JSON Object with boolean on whether user exists:
 		<ul>
 			<li>success : with values <i>true</i> or <i>false</i></li>
+		</ul>
+	</p>
+	<hr>
+	<p>
+		<h2>Get Cities</h2>
+		Path: <i>sportloc-backend.herokuapp.com/getCities</i>
+		Method GET that requires nothing and returns list of JSON objects:
+		<ul>
+			<li>id : example <i>84</i></li>
+			<li>name : string <i>Varaždin</i></li>
+		</ul>
+	</p>
+	<hr>
+	<p>
+		<h2>Get Sports</h2>
+		Path: <i>sportloc-backend.herokuapp.com/getSports</i>
+		Method GET that requires nothing and returns list of JSON objects:
+		<ul>
+			<li>id : example <i>42</i></li>
+			<li>name : string <i>Nogomet</i></li>
 		</ul>
 	</p>
 </body>
