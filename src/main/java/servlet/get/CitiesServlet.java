@@ -20,7 +20,7 @@ public class CitiesServlet extends HttpServletHelper {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		EventModel event = new EventModel();
-		String result = new Gson().toJson(event.getSportsCitiesList("city"));
+		String result = new Gson().toJson(event.getCitiesList());
 		sendResponse(response, result);
 	}
 

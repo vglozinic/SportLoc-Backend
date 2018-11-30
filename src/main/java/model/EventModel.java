@@ -15,25 +15,25 @@ public class EventModel {
 		this.daoFactory = new DaoFactory();
 	}
 	
-	public ArrayList<HashMap<String, Object>> getSportsCitiesList(String object) {
-		ResultSet list = null;
-		if(object == "city") {
-			list = daoFactory.getEventDao().getCities();		
-		}
-		if(object == "sport") {
-			list = daoFactory.getEventDao().getSports();
-		}
-		ArrayList<HashMap<String, Object>> result = getResultList(list, object);
+	public ArrayList<HashMap<String, Object>> getCitiesList() {
+		ResultSet list = daoFactory.getEventDao().getCities();	
+		ArrayList<HashMap<String, Object>> result = getResultList(list);
 		return result;
 	}
 	
-	private ArrayList<HashMap<String, Object>> getResultList(ResultSet data, String object) {
+	public ArrayList<HashMap<String, Object>> getSportsList() {
+		ResultSet list = daoFactory.getEventDao().getSports();
+		ArrayList<HashMap<String, Object>> result = getResultList(list);
+		return result;
+	}
+	
+	private ArrayList<HashMap<String, Object>> getResultList(ResultSet data) {
 		ArrayList<HashMap<String, Object>> result = new ArrayList<HashMap<String, Object>>();
 		if (data != null) {
 			try {
 				while(data.next()) {
 					HashMap<String, Object> map = new HashMap<String, Object>();
-					map.put("id_" + object, data.getInt(1));
+					map.put("id" , data.getInt(1));
 					map.put("name", data.getString(2));
 					result.add(map);
 				}
