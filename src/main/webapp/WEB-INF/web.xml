@@ -27,6 +27,18 @@
 		<servlet-name>CitiesServlet</servlet-name>
 		<servlet-class>servlet.get.CitiesServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>CreateEventServlet</servlet-name>
+		<servlet-class>servlet.post.CreateEventServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>UpdateEventServlet</servlet-name>
+		<servlet-class>servlet.post.UpdateEventServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>DeleteEventServlet</servlet-name>
+		<servlet-class>servlet.get.DeleteEventServlet</servlet-class>
+	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>RegistrationServlet</servlet-name>
@@ -51,6 +63,18 @@
 	<servlet-mapping>
 		<servlet-name>CitiesServlet</servlet-name>
 		<url-pattern>/getCities</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>CreateEventServlet</servlet-name>
+		<url-pattern>/createEvent</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>UpdateEventServlet</servlet-name>
+		<url-pattern>/updateEvent</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>DeleteEventServlet</servlet-name>
+		<url-pattern>/deleteEvent</url-pattern>
 	</servlet-mapping>
 </web-app>
 

@@ -5,6 +5,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.eclipse.jdt.internal.compiler.parser.ParserBasicInformation;
+
+import beans.EventBean;
 import dao.DaoFactory;
 
 public class EventModel {
@@ -25,6 +28,18 @@ public class EventModel {
 		ResultSet list = daoFactory.getEventDao().getSports();
 		ArrayList<HashMap<String, Object>> result = getResultList(list);
 		return result;
+	}
+	
+	public boolean createEvent(EventBean event) {
+		return daoFactory.getEventDao().createEvent(event);
+	}
+	
+	public boolean updateEvent(EventBean event) {
+		return daoFactory.getEventDao().updateEvent(event);
+	}
+	
+	public boolean deleteEvent(String id) {
+		return daoFactory.getEventDao().deleteEvent(Integer.parseInt(id));
 	}
 	
 	private ArrayList<HashMap<String, Object>> getResultList(ResultSet data) {

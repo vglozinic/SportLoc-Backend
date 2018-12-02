@@ -77,9 +77,10 @@ public class UserDao {
 			query.setBoolean(7, user.getGender());
 			query.setDate(8, Date.valueOf(user.getDob()));
 	
-			query.execute();
+			if(query.executeUpdate() != 0) {
+				result = true;
+			}
 			connection.close();
-			result = true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
