@@ -98,9 +98,9 @@
 			<li>capacity : example <i>10</i></li>
 			<li>date : example "2019-04-01" (YYYY-MM-DD)</li>
 			<li>open : <i>true</i> if open, <i>false</i> if closed</li>
-			<li>id_city : example <i>84</i></li>
-			<li>id_sport : example <i>42</i></li>
-			<li>id_user : example <i>4</i></li>
+			<li>cityId : example <i>84</i></li>
+			<li>sportId : example <i>42</i></li>
+			<li>userId : example <i>4</i></li>
 		</ul>
 		Returnes JSON Object with single boolean:
 		<ul>
@@ -122,9 +122,9 @@
 			<li>capacity : example <i>10</i></li>
 			<li>date : example "2019-04-01" (YYYY-MM-DD)</li>
 			<li>open : <i>true</i> if open, <i>false</i> if closed</li>
-			<li>id_city : example <i>84</i></li>
-			<li>id_sport : example <i>42</i></li>
-			<li>id_event : example <i>16</i></li>
+			<li>cityId : example <i>84</i></li>
+			<li>sportId : example <i>42</i></li>
+			<li>eventId : example <i>16</i></li>
 		</ul>
 		Returnes JSON Object with single boolean:
 		<ul>
@@ -135,7 +135,7 @@
 	<hr>
 	<p>
 		<h2>Delete Event</h2>
-		Path <i>sportloc-backend.heroku.com/deleteEvent</i><br>
+		Path <i>sportloc-backend.herokuapp.com/deleteEvent</i><br>
 		Requires GET parametar of event ID which is:<br>
 		<ul>
 			<li>id : example <i>16</i></li>
@@ -143,6 +143,15 @@
 		Returns JSON Object with boolean success of operation:
 		<ul>
 			<li>success : with values <i>true</i> or <i>false</i></li>
+		</ul>
+	</p>
+	<hr>
+	<p>
+		<h2>Event List</h2>
+		Path <i>sportloc-backend.herokuapp.com/getEvents</i><br>
+		Method GET that requires nothing and returns list of Event JSON objects:<br>
+		<ul>
+			<li>??????</li>
 		</ul>
 	</p>
 </body>
