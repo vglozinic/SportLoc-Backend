@@ -68,6 +68,35 @@ public class EventDao {
 		}
 		return result;
 	}
+	
+	public ResultSet getEvents() {
+		ResultSet result = null;
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT DISTINCT ON (E.dates, E.id_event) ");
+		sql.append("E.id_event, E.id_sport, E.id_city, U.id_user, E.capacity, ");
+		sql.append("(SELECT COUNT(*) FROM public.participant JOIN public.event ");
+		sql.append("ON public.event.id_event = public.participant.id_event ");
+		sql.append("WHERE public.participant.id_status = 1 ");
+		sql.append("AND public.participant.id_event = E.id_event) AS current, ");
+		sql.append("E.opened AS open, E.name, E.start_time AS start, E.end_time AS end, E.address, ");
+		sql.append("E.description, E.dates AS date, S.name AS sport, C.name AS city, U.username ");
+		sql.append("FROM public.event E ");
+		sql.append("JOIN public.sport S ON E.id_sport = S.id_sport ");
+		sql.append("JOIN public.city C ON E.id_city = C.id_city ");
+		sql.append("JOIN public.participant P ON E.id_event = P.id_event ");
+		sql.append("JOIN public.user U ON P.id_user = U.id_user ");
+		sql.append("WHERE P.owner = TRUE ");
+		sql.append("ORDER BY E.dates DESC, E.id_event DESC");
+		Connection connection = daoFactory.getConnection();
+		try {
+			PreparedStatement query = connection.prepareStatement(sql.toString());
+			result = query.executeQuery();
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 	public boolean updateEvent(EventBean event) {
 		boolean result = false;

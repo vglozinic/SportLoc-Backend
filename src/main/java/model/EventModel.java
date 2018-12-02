@@ -30,6 +30,38 @@ public class EventModel {
 		return result;
 	}
 	
+	public ArrayList<EventBean> getEventList() {
+		ArrayList<EventBean> result = new ArrayList<EventBean>();
+		ResultSet data = daoFactory.getEventDao().getEvents();
+		if(data != null) {
+			try {
+				while(data.next()) {
+					EventBean event = new EventBean();
+					event.setEventId(data.getInt("id_event"));
+					event.setSportId(data.getInt("id_sport"));
+					event.setCityId(data.getInt("id_city"));
+					event.setUserId(data.getInt("id_user"));
+					event.setCapacity(data.getInt("capacity"));
+					event.setCurrent(data.getInt("current"));
+					event.setOpen(data.getBoolean("open"));
+					event.setName(data.getString("name"));
+					event.setStart(data.getString("start"));
+					event.setEnd(data.getString("end"));
+					event.setAddress(data.getString("address"));
+					event.setDescription(data.getString("description"));
+					event.setDate(data.getString("date"));
+					event.setSport(data.getString("sport"));
+					event.setCity(data.getString("city"));
+					event.setUsername(data.getString("username"));
+					result.add(event);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} 
+		return result;
+	}
+	
 	public boolean createEvent(EventBean event) {
 		return daoFactory.getEventDao().createEvent(event);
 	}

@@ -39,6 +39,10 @@
 		<servlet-name>DeleteEventServlet</servlet-name>
 		<servlet-class>servlet.get.DeleteEventServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>EventListServlet</servlet-name>
+		<servlet-class>servlet.get.EventListServlet</servlet-class>
+	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>RegistrationServlet</servlet-name>
@@ -75,6 +79,10 @@
 	<servlet-mapping>
 		<servlet-name>DeleteEventServlet</servlet-name>
 		<url-pattern>/deleteEvent</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>EventListServlet</servlet-name>
+		<url-pattern>/getEvents</url-pattern>
 	</servlet-mapping>
 </web-app>
 
