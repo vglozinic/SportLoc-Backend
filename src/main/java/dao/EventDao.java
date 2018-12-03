@@ -88,6 +88,7 @@ public class EventDao {
 		sql.append("WHERE P.owner = TRUE ");
 		sql.append("ORDER BY E.dates DESC, E.id_event DESC");
 		Connection connection = daoFactory.getConnection();
+		
 		try {
 			PreparedStatement query = connection.prepareStatement(sql.toString());
 			result = query.executeQuery();
@@ -129,6 +130,28 @@ public class EventDao {
 			if (query.executeUpdate() != 0) {
 				result = true;
 			}
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public ResultSet getParticipants(int id) {
+		ResultSet result = null;
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT P.id_event, P.id_user, U.username, P.id_status, S.name AS status ");
+		sql.append("FROM public.participant P ");
+		sql.append("JOIN public.user U ON P.id_user = U.id_user ");
+		sql.append("JOIN public.status S ON P.id_status = S.id_status ");
+		sql.append("WHERE id_event = ? ");
+		sql.append("ORDER BY id_status");
+		Connection connection = daoFactory.getConnection();
+		
+		try {
+			PreparedStatement query = connection.prepareStatement(sql.toString());
+			query.setInt(1, id);
+			result = query.executeQuery();
 			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import org.eclipse.jdt.internal.compiler.parser.ParserBasicInformation;
 
 import beans.EventBean;
+import beans.ParticipantBean;
 import dao.DaoFactory;
 
 public class EventModel {
@@ -72,6 +73,27 @@ public class EventModel {
 	
 	public boolean deleteEvent(String id) {
 		return daoFactory.getEventDao().deleteEvent(Integer.parseInt(id));
+	}
+	
+	public ArrayList<ParticipantBean> getParticipantList(String id) {
+		ArrayList<ParticipantBean> result = new ArrayList<ParticipantBean>();
+		ResultSet data = daoFactory.getEventDao().getParticipants(Integer.parseInt(id));
+		if(data != null) {
+			try {
+				while(data.next()) {
+					ParticipantBean participant = new ParticipantBean();
+					participant.setEventId(data.getInt("id_event"));
+					participant.setUserId(data.getInt("id_user"));
+					participant.setUsername(data.getString("username"));
+					participant.setStatusId(data.getInt("id_status"));
+					participant.setStatus(data.getString("status"));
+					result.add(participant);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
 	}
 	
 	private ArrayList<HashMap<String, Object>> getResultList(ResultSet data) {
