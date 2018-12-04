@@ -16,8 +16,37 @@ public class UserDao {
 		this.daoFactory = daoFactory;
 	}
 	
-	public ResultSet getData(String username, String sql) {
+	public boolean getData(String attribute, String sql) {
+		boolean result = false;
+		ResultSet data = null;
+		Connection connection = daoFactory.getConnection();
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			query.setString(1, attribute);
+			data = query.executeQuery();
+			if(data.next()) {
+				result = true;
+			}
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public boolean checkUser(String username) {
+		String sql = "SELECT id_user FROM public.user WHERE username = ?";
+		return getData(username, sql);
+	}
+	
+	public boolean checkEmail(String email) {
+		String sql = "SELECT id_user FROM public.user WHERE email = ?";
+		return getData(email, sql);
+	}
+	
+	public ResultSet getLoginData(String username){
 		ResultSet result = null;
+		String sql = "SELECT id_user, password, salt FROM public.user WHERE username = ?";
 		Connection connection = daoFactory.getConnection();
 		try {
 			PreparedStatement query = connection.prepareStatement(sql);
@@ -30,16 +59,51 @@ public class UserDao {
 		return result;
 	}
 	
-	public ResultSet checkUser(String username) {
-		String sql = "SELECT id_user FROM public.user WHERE username = ?";
-		return getData(username, sql);
+	public ResultSet getProfile (int id) {
+		ResultSet result = null;
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT DISTINCT ON (U.id_user) U.id_user, U.name, U.surname, U.username, U.email, U.gender, U.dob, U.description, ");
+		sql.append("(SELECT COUNT(*) FROM public.comment WHERE public.comment.id_user = U.id_user AND public.comment.vote = TRUE) AS upvote, ");
+		sql.append("(SELECT COUNT(*) FROM public.comment WHERE public.comment.id_user = U.id_user AND public.comment.vote = FALSE) AS downvote ");
+		sql.append("FROM public.user U LEFT JOIN public.comment C ON U.id_user = C.id_user WHERE U.id_user = ?");
+		Connection connection = daoFactory.getConnection();
+				
+		try {
+			PreparedStatement query = connection.prepareStatement(sql.toString());
+			query.setInt(1, id);
+			result = query.executeQuery();
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}		
+
+	public boolean updateProfile (UserBean user) {
+		boolean result = false;
+		String sql = "UPDATE public.user SET name = ?, surname = ?, email = ?, salt = ?, password = ?, description = ? WHERE id_user = ?";
+		Connection connection = daoFactory.getConnection();
+		
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			query.setString(1, user.getName());
+			query.setString(2, user.getSurname());
+			query.setString(3, user.getEmail());
+			query.setString(4, user.getSalt());
+			query.setString(5, user.getPassword());
+			query.setString(6, user.getDescription());
+			query.setInt(7, user.getUserId());
+			
+			if(query.executeUpdate() != 0) {
+				result = true;
+			}
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
-	
-	public ResultSet getLoginData(String username){
-		String sql = "SELECT id_user, password, salt FROM public.user WHERE username = ?";
-		return getData(username, sql);
-	}
-	
+
 	public boolean updatePassword(String salt, String hash, String email) {
 		boolean result = false;
 		String sql = "UPDATE public.user SET salt = ?, password = ? WHERE email = ?";

@@ -67,6 +67,19 @@
 	</p>
 	<hr>
 	<p>
+		<h2>Check E-mail</h2>
+		Path: <i>sportloc-backend.herokuapp.com/checkEmail</i><br>
+		Requires GET parametar which is:<br>
+		<ul>
+			<li>email : <i>nekiemail@host.hr</i></li>
+		</ul>
+		Returns JSON Object with boolean on whether email exists:
+		<ul>
+			<li>success : with values <i>true</i> or <i>false</i></li>
+		</ul>
+	</p>
+	<hr>
+	<p>
 		<h2>Get Cities</h2>
 		Path: <i>sportloc-backend.herokuapp.com/getCities</i><br>
 		Method GET that requires nothing and returns list of JSON objects:<br>
@@ -186,6 +199,15 @@
 			<li>statusId : <i>1</i></li>
 			<li>username : "testuser"</li>
 			<li>status : "Approved"</li>
+		</ul>
+	</p>
+	<hr>
+	<p>
+		<h2>Get Profile</h2>
+		Path <i>sportloc-backend.herokuapp.com/getProfile</i><br>
+		Requires GET parametar of user ID which is:<br>
+		<ul>
+			<li>id : <i>8</i></li>
 		</ul>
 	</p>
 </body>

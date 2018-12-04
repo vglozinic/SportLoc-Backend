@@ -20,6 +20,10 @@
 		<servlet-class>servlet.get.CheckUserServlet</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>CheckEmailServlet</servlet-name>
+		<servlet-class>servlet.get.CheckEmailServlet</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>SportsServlet</servlet-name>
 		<servlet-class>servlet.get.SportsServlet</servlet-class>
 	</servlet>
@@ -45,7 +49,15 @@
 	</servlet>
 	<servlet>
 		<servlet-name>ParticipantListServlet</servlet-name>
-		<servlet-class>servlet.getParticipantListServlet</servlet-class>
+		<servlet-class>servlet.get.ParticipantListServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>GetProfileServlet</servlet-name>
+		<servlet-class>servlet.get.GetProfileServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>UpdateProfileServlet</servlet-name>
+		<servlet-class>servlet.post.UpdateProfileServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -63,6 +75,10 @@
 	<servlet-mapping>
 		<servlet-name>CheckUserServlet</servlet-name>
 		<url-pattern>/checkUser</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>CheckEmailServlet</servlet-name>
+		<url-pattern>/checkEmail</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>SportsServlet</servlet-name>
@@ -91,6 +107,14 @@
 	<servlet-mapping>
 		<servlet-name>ParticipantListServlet</servlet-name>
 		<url-pattern>/getParticipants</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GetProfileServlet</servlet-name>
+		<url-pattern>/getProfile</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>UpdateProfileServlet</servlet-name>
+		<url-pattern>/updateProfile</url-pattern>
 	</servlet-mapping>
 </web-app>
 
