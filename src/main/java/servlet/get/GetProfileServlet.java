@@ -1,4 +1,4 @@
-package servlet.post;
+package servlet.get;
 
 import java.io.IOException;
 
@@ -15,17 +15,16 @@ import beans.UserBean;
 import helper.HttpServletHelper;
 import model.UserModel;
 
-@WebServlet(name = "RegistrationServlet", urlPatterns = "/register")
-public class RegistrationServlet extends HttpServletHelper {
+@WebServlet(name = "GetProfileServlet", urlPatterns = {"/getProfile"})
+public class GetProfileServlet extends HttpServletHelper {
 	
 	private static final long serialVersionUID = 1L;
 	
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Gson gson = new Gson();
-		JSONObject result = new JSONObject();
-		UserBean user = gson.fromJson(getRequestBody(request), UserBean.class);		
-		result.put("success", (new UserModel().registerUser(user)));
+		UserBean user = new UserModel().getProfile(request.getParameter("id"));
+		String result = gson.toJson(user);
 		sendResponse(response, result);
 	}
 

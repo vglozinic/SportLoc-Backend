@@ -7,8 +7,9 @@ public class UserBean implements Serializable {
 	public static final long serialVersionUID = 1L;
 	
 	private int userId;
+	private int upvote;
+	private int downvote;
 	private boolean gender;
-	private String dob;
 	private String name;
 	private String surname;
 	private String username;
@@ -16,6 +17,7 @@ public class UserBean implements Serializable {
 	private String salt;
 	private String password;
 	private String description;
+	private String dob;
 	
 	public UserBean () {}
 	
@@ -28,7 +30,9 @@ public class UserBean implements Serializable {
 			String password,
 			boolean gender, 
 			String dob, 
-			String description) {
+			String description,
+			int upvote,
+			int downvote) {
 		super();
 		this.userId = userId;
 		this.name = name;
@@ -127,6 +131,22 @@ public class UserBean implements Serializable {
 	
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public int getUpvote() {
+		return upvote;
+	}
+	
+	public void setUpvote(int upvote) {
+		this.upvote = upvote;
+	}
+	
+	public int getDownvote() {
+		return downvote;
+	}
+	
+	public void setDownvote(int downvote) {
+		this.downvote = downvote;
 	}
 
 }

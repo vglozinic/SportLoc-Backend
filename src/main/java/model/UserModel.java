@@ -39,32 +39,20 @@ public class UserModel {
 				e.printStackTrace();
 			}
 		}
-
 		return result;
 	}
 	
 	public boolean checkUser(String username) {
-		boolean result = false;
-		ResultSet data = daoFactory.getUserDao().checkUser(username);
-		
-		if(data != null) {
-			try {
-				if(data.next()) {
-					result = true;
-				}
-			}
-			catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		return result;
+		return daoFactory.getUserDao().checkUser(username);
+	}
+	
+	public boolean checkEmail(String email) {
+		return daoFactory.getUserDao().checkEmail(email);
 	}
 	
 	public boolean registerUser(UserBean user) {
 		boolean result = false;
-		
-		if(!user.getEmail().isEmpty()) {
+		if(!user.getEmail().isEmpty() && !user.getUsername().isEmpty()) {
 			user.setSalt(Password.getSalt());
 			user.setPassword(Password.getPassword(user.getPassword(), user.getSalt()));
 			
@@ -72,6 +60,41 @@ public class UserModel {
 			if (result) {
 				MailSender.sendEmail(user.getEmail(), "Registracija SportLoc", "Registracija za korisnicko ime " + user.getUsername() + " je gotova! Ovo je automatski e-mail potvrde.");
 			}
+		}
+		return result;
+	}
+	
+	public UserBean getProfile (String id) {
+		UserBean result = new UserBean();
+		ResultSet data = daoFactory.getUserDao().getProfile(Integer.parseInt(id));
+		if (data != null) {
+			try {
+				while (data.next()) {
+					result.setUserId(data.getInt("id_user"));
+					result.setName(data.getString("name"));
+					result.setSurname(data.getString("surname"));
+					result.setUsername(data.getString("username"));
+					result.setEmail(data.getString("email"));
+					result.setGender(data.getBoolean("gender"));
+					result.setDob(data.getString("dob"));
+					result.setDescription(data.getString("description"));
+					result.setUpvote(data.getInt("upvote"));
+					result.setDownvote(data.getInt("downvote"));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+	
+	
+	public boolean updateProfile(UserBean user) {
+		boolean result = false;
+		if(user.getUserId() != 0) {
+			user.setSalt(Password.getSalt());
+			user.setPassword(Password.getPassword(user.getPassword(), user.getSalt()));
+			result = daoFactory.getUserDao().updateProfile(user);
 		}
 		return result;
 	}
