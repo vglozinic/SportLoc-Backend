@@ -102,15 +102,14 @@
 	<p>
 		<h2>Create Event</h2>
 		Path: <i>sportloc-backend.herokuapp.com/createEvent</i><br>
-		Requires POST JSON Event Object which must contain parameters:<br>
+		Requires POST JSON EventBean Object which must contain parameters:<br>
 		<ul>
 			<li>name : "Neki događaj"</li>
-			<li>start : "18:00"</li>
-			<li>end : "20:00" <b>optional</b></li>
+			<li>start : "18:00 21.12.2018."</li>
+			<li>end : "20:00 01.01.2020." <b>optional</b></li>
 			<li>address : "Pavlinska 2, Varaždin"</li>
 			<li>description : "Opis ovog događaja"</li>
 			<li>capacity : <i>10</i></li>
-			<li>date : "2019-04-01" (YYYY-MM-DD)</li>
 			<li>open : <i>true</i> if open, <i>false</i> if closed</li>
 			<li>cityId : <i>84</i></li>
 			<li>sportId : <i>42</i></li>
@@ -126,21 +125,20 @@
 	<p>
 		<h2>Update Event</h2>
 		Path: <i>sportloc-backend.herokuapp.com/updateEvent</i><br>
-		Requires POST JSON Event Object which must contain parameters:<br>
+		Requires POST JSON EventBean Object which must contain parameters:<br>
 		<ul>
 			<li>name : "Neki događaj"</li>
-			<li>start : "18:00"</li>
-			<li>end : "20:00" <b>optional</b></li>
+			<li>start : "18:00 21.12.2018."</li>
+			<li>end : "20:00 01.01.2020." <b>optional</b></li>
 			<li>address : "Pavlinska 2, Varaždin"</li>
 			<li>description : "Opis ovog događaja"</li>
 			<li>capacity : <i>10</i></li>
-			<li>date : "2019-04-01" (YYYY-MM-DD)</li>
 			<li>open : <i>true</i> if open, <i>false</i> if closed</li>
 			<li>cityId : <i>84</i></li>
 			<li>sportId : <i>42</i></li>
 			<li>eventId : <i>16</i></li>
 		</ul>
-		Returnes JSON Object with single boolean:
+		Returns JSON Object with boolean success of operation:
 		<ul>
 			<li>success : with values <i>true</i> or <i>false</i></li>
 		</ul>
@@ -173,11 +171,10 @@
 			<li>current : <i>2</i></li>
 			<li>open : <i>true</i> if open, <i>false</i> if closed</li>
 			<li>name : "Naslov događaja"</li>
-			<li>start : "18:00:00"</li>
-			<li>end : "20:00:00"</li>
+			<li>start : "18:00 21.12.2018."</li>
+			<li>end : "20:00 01.01.2020."</li>
 			<li>address : "Pavilnska 2, Varaždin"</li>
 			<li>description : "Kratak opis ovog događaja"</li>
-			<li>date : "2019-04-01"</li>
 			<li>sport : "Nogomet"</li>
 			<li>city : "Varaždin"</li>
 			<li>username": "testuser"</li>
@@ -208,6 +205,38 @@
 		Requires GET parametar of user ID which is:<br>
 		<ul>
 			<li>id : <i>8</i></li>
+		</ul>
+		Returns UserBean JSON object with following values:<br>
+		<ul>
+			<li>userId : <i>9</i></li>
+			<li>upvote : <i>6</i></li>
+			<li>downvote : <i>4</i></li>
+			<li>gender : <i>true</i> if male, <i>false</i> if female</li>
+			<li>name : "Mišo"</li>
+			<li>surname : "Kovač"</li>
+			<li>username : "mkovac"</li>
+			<li>email : "miso.kovac@gmail.com"</li>
+			<li>description : "Kratak opis o meni"</li> 
+			<li>dob : "2013-06-18"</li>
+		</ul>
+		Attribute <i>description</i> won't be returned if description is empty
+	</p>
+	<hr>
+	<p>
+		<h2>Update Profile</h2>
+		Path <i>sportloc-backend.herokuapp.com/updateProfile</i><br>
+		Requires POST JSON UserBean Object which must contain parameters:<br>
+		<ul>
+			<li>userId : <i>8</i></li>
+			<li>name : "Slavica"</li>
+			<li>surname : "Kovač"</li>
+			<li>email : "alternativni@gmail.com"</li>
+			<li>password : "novalozinka12345"</li>
+			<li>description : "Neki novi opis korisnika"</li>
+		</ul>
+		Returns JSON Object with boolean success of operation:
+		<ul>
+			<li>success : with values <i>true</i> or <i>false</i></li>
 		</ul>
 	</p>
 </body>

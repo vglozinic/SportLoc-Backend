@@ -50,7 +50,6 @@ public class EventModel {
 					event.setEnd(data.getString("end"));
 					event.setAddress(data.getString("address"));
 					event.setDescription(data.getString("description"));
-					event.setDate(data.getString("date"));
 					event.setSport(data.getString("sport"));
 					event.setCity(data.getString("city"));
 					event.setUsername(data.getString("username"));

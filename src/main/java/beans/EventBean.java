@@ -18,7 +18,6 @@ public class EventBean {
 	private String end;
 	private String address;
 	private String description;
-	private String date;
 	private String sport;
 	private String city;
 	private String username;
@@ -31,7 +30,6 @@ public class EventBean {
 			String end,
 			String address,
 			String description,
-			String date,
 			boolean open,
 			int capacity,
 			int current,
@@ -48,7 +46,6 @@ public class EventBean {
 		this.end = end;
 		this.address = address;
 		this.description = description;
-		this.date = date;
 		this.open = open;
 		this.capacity = capacity;
 		this.current = current;
@@ -113,14 +110,6 @@ public class EventBean {
 	
 	public void setDescription(String description) {
 		this.description = description;
-	}
-	
-	public String getDate() {
-		return resolveNull(date);
-	}
-	
-	public void setDate(String date) {
-		this.date = date;
 	}
 	
 	public boolean getOpen() {
