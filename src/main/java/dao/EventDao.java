@@ -43,7 +43,7 @@ public class EventDao {
 		boolean result = false;
 		int queryResult = 0;
 		int subqueryResult = 0;
-		String sql = "INSERT INTO public.event (name, start_time, end_time, address, description, capacity, dates, opened, id_city, id_sport) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO public.event (name, start_time, end_time, address, description, capacity, opened, id_city, id_sport) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		String subsql = "INSERT INTO public.participant (id_event, id_user, owner, id_status) VALUES ((SELECT id_event FROM public.event ORDER BY id_event DESC LIMIT 1), ?, TRUE, 1)";
 		Connection connection = daoFactory.getConnection();
 
@@ -72,21 +72,21 @@ public class EventDao {
 	public ResultSet getEvents() {
 		ResultSet result = null;
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT DISTINCT ON (E.dates, E.id_event) ");
+		sql.append("SELECT DISTINCT ON (E.id_event) ");
 		sql.append("E.id_event, E.id_sport, E.id_city, U.id_user, E.capacity, ");
 		sql.append("(SELECT COUNT(*) FROM public.participant JOIN public.event ");
 		sql.append("ON public.event.id_event = public.participant.id_event ");
 		sql.append("WHERE public.participant.id_status = 1 ");
 		sql.append("AND public.participant.id_event = E.id_event) AS current, ");
-		sql.append("E.opened AS open, E.name, E.start_time AS start, E.end_time AS end, E.address, ");
-		sql.append("E.description, E.dates AS date, S.name AS sport, C.name AS city, U.username ");
+		sql.append("E.opened AS open, E.name, E.start_time AS start, E.end_time AS end, ");
+		sql.append("E.address, E.description, S.name AS sport, C.name AS city, U.username ");
 		sql.append("FROM public.event E ");
 		sql.append("JOIN public.sport S ON E.id_sport = S.id_sport ");
 		sql.append("JOIN public.city C ON E.id_city = C.id_city ");
 		sql.append("JOIN public.participant P ON E.id_event = P.id_event ");
 		sql.append("JOIN public.user U ON P.id_user = U.id_user ");
 		sql.append("WHERE P.owner = TRUE ");
-		sql.append("ORDER BY E.dates DESC, E.id_event DESC");
+		sql.append("ORDER BY E.id_event DESC");
 		Connection connection = daoFactory.getConnection();
 		
 		try {
@@ -101,12 +101,12 @@ public class EventDao {
 
 	public boolean updateEvent(EventBean event) {
 		boolean result = false;
-		String sql = "UPDATE public.event SET name = ?, start_time = ?, end_time = ?, address = ?, description = ?, capacity = ?, dates = ?, opened = ?, id_city = ?, id_sport = ? WHERE id_event = ?";
+		String sql = "UPDATE public.event SET name = ?, start_time = ?, end_time = ?, address = ?, description = ?, capacity = ?, opened = ?, id_city = ?, id_sport = ? WHERE id_event = ?";
 		Connection connection = daoFactory.getConnection();
 
 		try {
 			PreparedStatement query = prepareEventStatement(event, sql, connection);
-			query.setInt(11, event.getEventId());
+			query.setInt(10, event.getEventId());
 
 			if (query.executeUpdate() != 0) {
 				result = true;
@@ -162,19 +162,18 @@ public class EventDao {
 	private PreparedStatement prepareEventStatement(EventBean event, String sql, Connection connection) throws SQLException {
 		PreparedStatement query = connection.prepareStatement(sql);
 		query.setString(1, event.getName());
-		query.setObject(2, event.getStart() + ":00", Types.TIME);
+		query.setString(2, event.getStart());
 		if (event.getEnd().isEmpty()) {
-			query.setNull(3, Types.TIME);
+			query.setNull(3, Types.VARCHAR);
 		} else {
-			query.setObject(3, event.getEnd() + ":00", Types.TIME);
+			query.setString(3, event.getEnd());
 		}
 		query.setString(4, event.getAddress());
 		query.setString(5, event.getDescription());
 		query.setInt(6, event.getCapacity());
-		query.setDate(7, Date.valueOf(event.getDate()));
-		query.setBoolean(8, event.getOpen());
-		query.setInt(9, event.getCityId());
-		query.setInt(10, event.getSportId());
+		query.setBoolean(7, event.getOpen());
+		query.setInt(8, event.getCityId());
+		query.setInt(9, event.getSportId());
 		return query;
 	}
 
