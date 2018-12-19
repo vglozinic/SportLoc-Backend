@@ -20,6 +20,7 @@ public class EventDao {
 	public ResultSet getList(String sql) {
 		ResultSet result = null;
 		Connection connection = daoFactory.getConnection();
+		
 		try {
 			PreparedStatement query = connection.prepareStatement(sql);
 			result = query.executeQuery();
