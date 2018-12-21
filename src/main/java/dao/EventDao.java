@@ -16,6 +16,14 @@ public class EventDao {
 	public EventDao(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
 	}
+	
+	public void closeConnection (Connection connection) {
+		try {
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public ResultSet getList(String sql) {
 		ResultSet result = null;
@@ -26,6 +34,28 @@ public class EventDao {
 			result = query.executeQuery();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
+		}
+		return result;
+	}
+	
+	private boolean resolveParticipant(int eventId, int userId, String sql) {
+		boolean result = false;
+		Connection connection = daoFactory.getConnection();
+		
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			query.setInt(1, eventId);
+			query.setInt(2, userId);
+			
+			if(query.executeUpdate() != 0) {
+				result = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
 		}
 		return result;
 	}
@@ -62,10 +92,11 @@ public class EventDao {
 				result = true;
 			} else {
 				connection.rollback();
-			}
-			connection.close();
+			} 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
 		}
 		return result;
 	}
@@ -93,9 +124,10 @@ public class EventDao {
 		try {
 			PreparedStatement query = connection.prepareStatement(sql.toString());
 			result = query.executeQuery();
-			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
 		}
 		return result;
 	}
@@ -112,9 +144,10 @@ public class EventDao {
 			if (query.executeUpdate() != 0) {
 				result = true;
 			}
-			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
 		}
 		return result;
 	}
@@ -131,9 +164,10 @@ public class EventDao {
 			if (query.executeUpdate() != 0) {
 				result = true;
 			}
-			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
 		}
 		return result;
 	}
@@ -153,11 +187,47 @@ public class EventDao {
 			PreparedStatement query = connection.prepareStatement(sql.toString());
 			query.setInt(1, id);
 			result = query.executeQuery();
-			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
 		}
 		return result;
+	}
+	
+	public boolean enterEvent(int eventId, int userId) {
+		String sql = "INSERT INTO public.participant (id_event, id_user, owner, id_status) VALUES (?, ?, FALSE, 1)";
+		return resolveParticipant(eventId, userId, sql);
+	}
+	
+	public boolean leaveEvent(int eventId, int userId) {
+		String sql = "DELETE FROM public.participant WHERE id_event = ? AND id_user = ? AND id_status = 1";
+		return resolveParticipant(eventId, userId, sql);
+	}
+	
+	public boolean sendRequest(int eventId, int userId) {
+		String sql = "INSERT INTO public.participant (id_event, id_user, owner, id_status) VALUES (?, ?, FALSE, 2)";
+		return resolveParticipant(eventId, userId, sql);
+	}
+	
+	public boolean cancelRequest(int eventId, int userId) {
+		String sql = "DELETE FROM public.participant WHERE id_event = ? AND id_user = ? AND id_status = 2";
+		return resolveParticipant(eventId, userId, sql);
+	}
+	
+	public boolean approveUser(int eventId, int userId) {
+		String sql = "UPDATE public.participant SET id_status = 1 WHERE id_event = ? AND id_user = ?";
+		return resolveParticipant(eventId, userId, sql);
+	}
+	
+	public boolean blockUser(int eventId, int userId) {
+		String sql = "UPDATE public.participant SET id_status = 3 WHERE id_event = ? AND id_user = ?";
+		return resolveParticipant(eventId, userId, sql);
+	}
+	
+	public boolean removeUser(int eventId, int userId) {
+		String sql = "DELETE FROM public.participant WHERE id_event = ? AND id_user = ?";
+		return resolveParticipant(eventId, userId, sql);
 	}
 	
 	private PreparedStatement prepareEventStatement(EventBean event, String sql, Connection connection) throws SQLException {

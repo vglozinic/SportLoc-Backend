@@ -3,13 +3,16 @@ package model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.jdt.internal.compiler.parser.ParserBasicInformation;
 
 import beans.EventBean;
 import beans.ParticipantBean;
 import dao.DaoFactory;
+import helper.ActionEnum;
 
 public class EventModel {
 	
@@ -17,6 +20,11 @@ public class EventModel {
 	
 	public EventModel() {
 		this.daoFactory = new DaoFactory();
+	}
+	
+	public boolean checkInteger(String number) {
+		String regex = "^[0-9]+$";
+		return number.matches(regex);
 	}
 	
 	public ArrayList<HashMap<String, Object>> getCitiesList() {
@@ -72,25 +80,54 @@ public class EventModel {
 	}
 	
 	public boolean deleteEvent(String id) {
-		return daoFactory.getEventDao().deleteEvent(Integer.parseInt(id));
+		if(checkInteger(id)) {
+			return daoFactory.getEventDao().deleteEvent(Integer.parseInt(id));
+		}
+		else {
+			return false;
+		}
 	}
 	
 	public ArrayList<ParticipantBean> getParticipantList(String id) {
 		ArrayList<ParticipantBean> result = new ArrayList<ParticipantBean>();
-		ResultSet data = daoFactory.getEventDao().getParticipants(Integer.parseInt(id));
-		if(data != null) {
-			try {
-				while(data.next()) {
-					ParticipantBean participant = new ParticipantBean();
-					participant.setEventId(data.getInt("id_event"));
-					participant.setUserId(data.getInt("id_user"));
-					participant.setUsername(data.getString("username"));
-					participant.setStatusId(data.getInt("id_status"));
-					participant.setStatus(data.getString("status"));
-					result.add(participant);
+		if(checkInteger(id)) {
+			ResultSet data = daoFactory.getEventDao().getParticipants(Integer.parseInt(id));
+			if(data != null) {
+				try {
+					while(data.next()) {
+						ParticipantBean participant = new ParticipantBean();
+						participant.setEventId(data.getInt("id_event"));
+						participant.setUserId(data.getInt("id_user"));
+						participant.setUsername(data.getString("username"));
+						participant.setStatusId(data.getInt("id_status"));
+						participant.setStatus(data.getString("status"));
+						result.add(participant);
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
 				}
-			} catch (SQLException e) {
-				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+	
+	public boolean resolveParticipant(Map<String, String[]> parameters) {
+		boolean result = false;
+		if(parameters != null && !parameters.isEmpty() && parameters.containsKey("event") && parameters.containsKey("user") && parameters.containsKey("action")) {
+			if(checkInteger(parameters.get("event")[0]) && checkInteger(parameters.get("user")[0]) && checkInteger(parameters.get("action")[0])) {
+				int eventId = Integer.parseInt(parameters.get("event")[0]);
+				int userId = Integer.parseInt(parameters.get("user")[0]);
+				int action = Integer.parseInt(parameters.get("action")[0]);
+				switch (action) {
+					case 1: result = daoFactory.getEventDao().enterEvent(eventId, userId); break;
+					case 2: result = daoFactory.getEventDao().leaveEvent(eventId, userId); break;
+					case 3: result = daoFactory.getEventDao().sendRequest(eventId, userId); break;
+					case 4: result = daoFactory.getEventDao().cancelRequest(eventId, userId); break;
+					case 5: result = daoFactory.getEventDao().approveUser(eventId, userId); break;
+					case 6: result = daoFactory.getEventDao().blockUser(eventId, userId); break;
+					case 7: result = daoFactory.getEventDao().removeUser(eventId, userId); break;
+					default: return result;
+				}
 			}
 		}
 		return result;

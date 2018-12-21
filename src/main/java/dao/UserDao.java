@@ -17,6 +17,14 @@ public class UserDao {
 		this.daoFactory = daoFactory;
 	}
 	
+	public void closeConnection (Connection connection) {
+		try {
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public boolean getData(String attribute, String sql) {
 		boolean result = false;
 		ResultSet data = null;
@@ -30,9 +38,10 @@ public class UserDao {
 			if(data.next()) {
 				result = true;
 			}
-			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
 		}
 		return result;
 	}
@@ -53,12 +62,13 @@ public class UserDao {
 		Connection connection = daoFactory.getConnection();
 		
 		try {
-			PreparedStatement query = connection.prepareStatement(sql);
+			PreparedStatement query  = connection.prepareStatement(sql);
 			query.setString(1, username);
 			result = query.executeQuery();
-			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
 		}
 		return result;
 	}
@@ -78,10 +88,11 @@ public class UserDao {
 			if(query.executeUpdate() != 0) {
 				result = true;
 			}
-			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} 
+		} finally {
+			closeConnection(connection);
+		}
 		return result;
 	}
 	
@@ -99,9 +110,10 @@ public class UserDao {
 			PreparedStatement query = connection.prepareStatement(sql.toString());
 			query.setInt(1, id);
 			result = query.executeQuery();
-			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
 		}
 		return result;
 	}
@@ -121,9 +133,10 @@ public class UserDao {
 			if(data.next()) {
 				result = true;
 			}
-			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
 		}
 		return result;
 	}
@@ -141,9 +154,10 @@ public class UserDao {
 			if(query.executeUpdate() != 0) {
 				result = true;
 			}
-			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
 		}
 		return result;
 	}
@@ -161,9 +175,10 @@ public class UserDao {
 			PreparedStatement query = connection.prepareStatement(sql.toString());
 			query.setInt(1, id);
 			result = query.executeQuery();
-			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
 		}
 		return result;
 	}		
@@ -186,9 +201,10 @@ public class UserDao {
 			if(query.executeUpdate() != 0) {
 				result = true;
 			}
-			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
 		}
 		return result;
 	}
@@ -207,21 +223,21 @@ public class UserDao {
 			if(query.executeUpdate() != 0) {
 				result = true;
 			}
-			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
 		}
 		return result;
 	}
 	
-	public boolean insertUser(UserBean user) {
+	public boolean registerUser(UserBean user) {
 		boolean result = false;
 		String sql = "INSERT INTO public.user (name, surname, username, email, salt, password, gender, description, dob) VALUES (?, ?, ?, ?, ?, ?, ?, NULL, ?)";
 		Connection connection = daoFactory.getConnection();
 
 		try {
 			PreparedStatement query = connection.prepareStatement(sql);
-			
 			query.setString(1, user.getName());
 			query.setString(2, user.getSurname());
 			query.setString(3, user.getUsername());
@@ -234,9 +250,10 @@ public class UserDao {
 			if(query.executeUpdate() != 0) {
 				result = true;
 			}
-			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
 		}
 		return result;
 	}

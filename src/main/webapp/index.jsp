@@ -286,6 +286,31 @@
 			<li>success : with values <i>true</i> or <i>false</i></li>
 		</ul>
 	</p>
+	<hr>
+	<p>
+		<h2>Resolve Participant</h2>
+		Path: <i>sportloc-backend.herokuapp.com/resolveParticipant</i><br>
+		Performs one event application action with GET parameters which are:<br>
+		<ul>
+			<li>event : <i>25</i></li>
+			<li>user : <i>23</i></li>
+			<li>action : <i>1-7</i></li>
+		</ul>
+		List of available actions and their codes:
+		<ul>
+			<li>1 - Enter open event</li>
+			<li>2 - Leave open event</li>
+			<li>3 - Request enterance on closed event</li>
+			<li>4 - Cancel request on closed event</li>
+			<li>5 - Approve pending or blocked user for event</li> 
+			<li>6 - Block user from your event or pending list</li>
+			<li>7 - Remove user from your event or blocked list</li>
+		</ul>
+		Returns JSON Object with boolean success of operation:
+		<ul>
+			<li>success : with values <i>true</i> or <i>false</i></li>
+		</ul>
+	</p>
 </body>
 </html>
 
