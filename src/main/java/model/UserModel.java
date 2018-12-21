@@ -2,8 +2,10 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Map;
 
+import beans.CommentBean;
 import beans.UserBean;
 import dao.DaoFactory;
 import helper.MailSender;
@@ -15,6 +17,20 @@ public class UserModel {
 	
 	public UserModel() {
 		this.daoFactory = new DaoFactory();
+	}
+	
+	public boolean checkInteger(String number) {
+		String regex = "^[0-9]+$";
+		return number.matches(regex);
+	}
+	
+	public boolean checkBoolean(String bool) {
+		if(bool.equals("true") || bool.equals("false")) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	public int checkParameters(Map<String, String[]> parameters) {
@@ -56,7 +72,7 @@ public class UserModel {
 			user.setSalt(Password.getSalt());
 			user.setPassword(Password.getPassword(user.getPassword(), user.getSalt()));
 			
-			result = daoFactory.getUserDao().insertUser(user);
+			result = daoFactory.getUserDao().registerUser(user);
 			if (result) {
 				MailSender.sendEmail(user.getEmail(), "Registracija SportLoc", "Registracija za korisnicko ime " + user.getUsername() + " je gotova! Ovo je automatski e-mail potvrde.");
 			}
@@ -66,23 +82,25 @@ public class UserModel {
 	
 	public UserBean getProfile (String id) {
 		UserBean result = new UserBean();
-		ResultSet data = daoFactory.getUserDao().getProfile(Integer.parseInt(id));
-		if (data != null) {
-			try {
-				while (data.next()) {
-					result.setUserId(data.getInt("id_user"));
-					result.setName(data.getString("name"));
-					result.setSurname(data.getString("surname"));
-					result.setUsername(data.getString("username"));
-					result.setEmail(data.getString("email"));
-					result.setGender(data.getBoolean("gender"));
-					result.setDob(data.getString("dob"));
-					result.setDescription(data.getString("description"));
-					result.setUpvote(data.getInt("upvote"));
-					result.setDownvote(data.getInt("downvote"));
+		if(checkInteger(id)) {
+			ResultSet data = daoFactory.getUserDao().getProfile(Integer.parseInt(id));
+			if (data != null) {
+				try {
+					while (data.next()) {
+						result.setUserId(data.getInt("id_user"));
+						result.setName(data.getString("name"));
+						result.setSurname(data.getString("surname"));
+						result.setUsername(data.getString("username"));
+						result.setEmail(data.getString("email"));
+						result.setGender(data.getBoolean("gender"));
+						result.setDob(data.getString("dob"));
+						result.setDescription(data.getString("description"));
+						result.setUpvote(data.getInt("upvote"));
+						result.setDownvote(data.getInt("downvote"));
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
 				}
-			} catch (SQLException e) {
-				e.printStackTrace();
 			}
 		}
 		return result;
@@ -113,5 +131,51 @@ public class UserModel {
 		}
 		return result;
 	}
+	
+	public ArrayList<CommentBean> getCommentList(String id) {
+		ArrayList<CommentBean> result = new ArrayList<CommentBean>();
+		if(checkInteger(id)) {
+			ResultSet data = daoFactory.getUserDao().getComments(Integer.parseInt(id));
+			if(data != null) {
+				try {
+					while(data.next()) {
+						CommentBean comment = new CommentBean();
+						comment.setUserId(data.getInt("id_user"));
+						comment.setCommentatorId(data.getInt("id_commentator"));
+						comment.setCommentator(data.getString("commentator"));
+						comment.setComment(data.getString("comment"));
+						comment.setVote(data.getBoolean("vote"));
+						result.add(comment);
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return result;
+	}
+	
+	public boolean resolveComment(Map<String, String[]> parameters) {
+		boolean result = false;
+		if(parameters != null && !parameters.isEmpty() && parameters.containsKey("commentator") && parameters.containsKey("user") && parameters.containsKey("action")) {
+			if(checkInteger(parameters.get("commentator")[0]) && checkInteger(parameters.get("user")[0])) {
+				int commentatorId = Integer.parseInt(parameters.get("commentator")[0]);
+				int userId = Integer.parseInt(parameters.get("user")[0]);
+				if(checkBoolean(parameters.get("action")[0])) {
+					boolean action = Boolean.parseBoolean(parameters.get("action")[0]);
+					if(action) {
+						result = daoFactory.getUserDao().deleteComment(userId, commentatorId);
+					}
+					else {
+						result = daoFactory.getUserDao().checkComment(userId, commentatorId);
+					}
+				}
+			}
+		}
+		return result;
+	}
 
+	public boolean writeComment(CommentBean comment) {
+		return daoFactory.getUserDao().writeComment(comment);
+	}
 }

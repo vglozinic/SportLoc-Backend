@@ -59,6 +59,22 @@
 		<servlet-name>UpdateProfileServlet</servlet-name>
 		<servlet-class>servlet.post.UpdateProfileServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>CommentListServlet</servlet-name>
+		<servlet-class>servlet.get.CommentListServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>WriteCommentServlet</servlet-name>
+		<servlet-class>servlet.post.WriteCommentServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>ResolveCommentServlet</servlet-name>
+		<servlet-class>servlet.get.ResolveCommentServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>ResolveParticipantServlet</servlet-name>
+		<servlet-class>servlet.get.ResolveParticipantServlet</servlet-class>
+	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>RegistrationServlet</servlet-name>
@@ -115,6 +131,22 @@
 	<servlet-mapping>
 		<servlet-name>UpdateProfileServlet</servlet-name>
 		<url-pattern>/updateProfile</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>CommentListServlet</servlet-name>
+		<url-pattern>/getComments</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>WriteCommentServlet</servlet-name>
+		<url-pattern>/writeComment</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ResolveCommentServlet</servlet-name>
+		<url-pattern>/resolveComment</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ResolveParticipantServlet</servlet-name>
+		<url-pattern>/resolveParticipant</url-pattern>
 	</servlet-mapping>
 </web-app>
 

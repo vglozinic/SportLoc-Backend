@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import beans.CommentBean;
 import beans.UserBean;
 
 public class UserDao {
@@ -16,20 +17,31 @@ public class UserDao {
 		this.daoFactory = daoFactory;
 	}
 	
+	public void closeConnection (Connection connection) {
+		try {
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public boolean getData(String attribute, String sql) {
 		boolean result = false;
 		ResultSet data = null;
 		Connection connection = daoFactory.getConnection();
+		
 		try {
 			PreparedStatement query = connection.prepareStatement(sql);
 			query.setString(1, attribute);
 			data = query.executeQuery();
+			
 			if(data.next()) {
 				result = true;
 			}
-			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
 		}
 		return result;
 	}
@@ -48,13 +60,104 @@ public class UserDao {
 		ResultSet result = null;
 		String sql = "SELECT id_user, password, salt FROM public.user WHERE username = ?";
 		Connection connection = daoFactory.getConnection();
+		
 		try {
-			PreparedStatement query = connection.prepareStatement(sql);
+			PreparedStatement query  = connection.prepareStatement(sql);
 			query.setString(1, username);
 			result = query.executeQuery();
-			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
+		}
+		return result;
+	}
+	
+	public boolean writeComment(CommentBean comment) {
+		boolean result = false;
+		String sql = "INSERT INTO public.comment (id_user, id_commentator, comment, vote) VALUES (?, ?, ?, ?)";
+		Connection connection = daoFactory.getConnection();
+		
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			query.setInt(1, comment.getUserId());
+			query.setInt(2, comment.getCommentatorId());
+			query.setString(3, comment.getComment());
+			query.setBoolean(4, comment.getVote());
+			
+			if(query.executeUpdate() != 0) {
+				result = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
+		}
+		return result;
+	}
+	
+	public ResultSet getComments(int id) {
+		ResultSet result = null;
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT C.id_user, C.id_commentator, ");
+		sql.append("(SELECT username FROM public.user ");
+		sql.append(" WHERE id_user = C.id_commentator) ");
+		sql.append("AS commentator, C.comment, C.vote ");
+		sql.append("FROM public.comment C WHERE C.id_user = ?");
+		Connection connection = daoFactory.getConnection();
+		
+		try {
+			PreparedStatement query = connection.prepareStatement(sql.toString());
+			query.setInt(1, id);
+			result = query.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
+		}
+		return result;
+	}
+	
+	public boolean checkComment(int userId, int commentatorId) {
+		boolean result = false;
+		ResultSet data = null;
+		String sql = "SELECT vote FROM public.comment WHERE id_user = ? AND id_commentator = ?";
+		Connection connection = daoFactory.getConnection();
+		
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			query.setInt(1, userId);
+			query.setInt(2, commentatorId);
+			data = query.executeQuery();
+			
+			if(data.next()) {
+				result = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
+		}
+		return result;
+	}
+	
+	public boolean deleteComment(int userId, int commentatorId) {
+		boolean result = false;
+		String sql = "DELETE FROM public.comment WHERE id_user = ? AND id_commentator = ?";
+		Connection connection = daoFactory.getConnection();
+		
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			query.setInt(1, userId);
+			query.setInt(2, commentatorId);
+			
+			if(query.executeUpdate() != 0) {
+				result = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
 		}
 		return result;
 	}
@@ -72,9 +175,10 @@ public class UserDao {
 			PreparedStatement query = connection.prepareStatement(sql.toString());
 			query.setInt(1, id);
 			result = query.executeQuery();
-			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
 		}
 		return result;
 	}		
@@ -97,9 +201,10 @@ public class UserDao {
 			if(query.executeUpdate() != 0) {
 				result = true;
 			}
-			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
 		}
 		return result;
 	}
@@ -108,6 +213,7 @@ public class UserDao {
 		boolean result = false;
 		String sql = "UPDATE public.user SET salt = ?, password = ? WHERE email = ?";
 		Connection connection = daoFactory.getConnection();
+		
 		try {
 			PreparedStatement query = connection.prepareStatement(sql);
 			query.setString(1, salt);
@@ -117,21 +223,21 @@ public class UserDao {
 			if(query.executeUpdate() != 0) {
 				result = true;
 			}
-			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
 		}
 		return result;
 	}
 	
-	public boolean insertUser(UserBean user) {
+	public boolean registerUser(UserBean user) {
 		boolean result = false;
 		String sql = "INSERT INTO public.user (name, surname, username, email, salt, password, gender, description, dob) VALUES (?, ?, ?, ?, ?, ?, ?, NULL, ?)";
 		Connection connection = daoFactory.getConnection();
 
 		try {
 			PreparedStatement query = connection.prepareStatement(sql);
-			
 			query.setString(1, user.getName());
 			query.setString(2, user.getSurname());
 			query.setString(3, user.getUsername());
@@ -144,9 +250,10 @@ public class UserDao {
 			if(query.executeUpdate() != 0) {
 				result = true;
 			}
-			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection(connection);
 		}
 		return result;
 	}
