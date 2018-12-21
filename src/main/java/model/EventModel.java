@@ -12,7 +12,6 @@ import org.eclipse.jdt.internal.compiler.parser.ParserBasicInformation;
 import beans.EventBean;
 import beans.ParticipantBean;
 import dao.DaoFactory;
-import helper.ActionEnum;
 
 public class EventModel {
 	
