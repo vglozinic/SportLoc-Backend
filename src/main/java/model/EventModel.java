@@ -34,6 +34,7 @@ public class EventModel {
 	public ArrayList<EventBean> getEventList() {
 		ArrayList<EventBean> result = new ArrayList<EventBean>();
 		ResultSet data = daoFactory.getEventDao().getEvents();
+		
 		if(data != null) {
 			try {
 				while(data.next()) {

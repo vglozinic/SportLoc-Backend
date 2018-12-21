@@ -2,8 +2,10 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Map;
 
+import beans.CommentBean;
 import beans.UserBean;
 import dao.DaoFactory;
 import helper.MailSender;
@@ -113,5 +115,46 @@ public class UserModel {
 		}
 		return result;
 	}
+	
+	public ArrayList<CommentBean> getCommentList(String id) {
+		ArrayList<CommentBean> result = new ArrayList<CommentBean>();
+		ResultSet data = daoFactory.getUserDao().getComments(Integer.parseInt(id));
+		
+		if(data != null) {
+			try {
+				while(data.next()) {
+					CommentBean comment = new CommentBean();
+					comment.setUserId(data.getInt("id_user"));
+					comment.setCommentatorId(data.getInt("id_commentator"));
+					comment.setCommentator(data.getString("commentator"));
+					comment.setComment(data.getString("comment"));
+					comment.setVote(data.getBoolean("vote"));
+					result.add(comment);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+	
+	public boolean resolveComment(Map<String, String[]> parameters) {
+		boolean result = false;
+		if(parameters != null && !parameters.isEmpty() && parameters.containsKey("commentator") && parameters.containsKey("user") && parameters.containsKey("action")) {
+			int commentatorId = Integer.parseInt(parameters.get("commentator")[0]);
+			int userId = Integer.parseInt(parameters.get("user")[0]);
+			boolean action = Boolean.parseBoolean(parameters.get("action")[0]);
+			if(action) {
+				result = daoFactory.getUserDao().deleteComment(userId, commentatorId);
+			}
+			else {
+				result = daoFactory.getUserDao().checkComment(userId, commentatorId);
+			}
+		}
+		return result;
+	}
 
+	public boolean writeComment(CommentBean comment) {
+		return daoFactory.getUserDao().writeComment(comment);
+	}
 }
