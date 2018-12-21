@@ -23,18 +23,3 @@
 hs_err_pid*
 
 /target/
-bin/system.properties
-bin/src/main/webapp/index.jsp
-bin/src/main/webapp/WEB-INF/web.xml
-bin/pom.xml
-bin/Procfile
-bin/.settings/org.eclipse.m2e.core.prefs
-bin/.settings/org.eclipse.jdt.core.prefs
-bin/.settings/org.eclipse.jdt.apt.core.prefs
-bin/.project
-bin/.gitignore
-bin/.classpath
-.settings/org.eclipse.m2e.core.prefs
-.settings/org.eclipse.jdt.core.prefs
-.settings/org.eclipse.jdt.apt.core.prefs
-.classpath
