@@ -3,15 +3,12 @@ package model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
-
-import org.eclipse.jdt.internal.compiler.parser.ParserBasicInformation;
 
 import beans.EventBean;
 import beans.ParticipantBean;
 import dao.DaoFactory;
+import helper.ActionEnum;
 
 public class EventModel {
 	
@@ -110,23 +107,28 @@ public class EventModel {
 		return result;
 	}
 	
-	public boolean resolveParticipant(Map<String, String[]> parameters) {
+	public boolean resolveParticipant(ParticipantBean participant) {
 		boolean result = false;
-		if(parameters != null && !parameters.isEmpty() && parameters.containsKey("event") && parameters.containsKey("user") && parameters.containsKey("action")) {
-			if(checkInteger(parameters.get("event")[0]) && checkInteger(parameters.get("user")[0]) && checkInteger(parameters.get("action")[0])) {
-				int eventId = Integer.parseInt(parameters.get("event")[0]);
-				int userId = Integer.parseInt(parameters.get("user")[0]);
-				int action = Integer.parseInt(parameters.get("action")[0]);
-				switch (action) {
-					case 1: result = daoFactory.getEventDao().enterEvent(eventId, userId); break;
-					case 2: result = daoFactory.getEventDao().leaveEvent(eventId, userId); break;
-					case 3: result = daoFactory.getEventDao().sendRequest(eventId, userId); break;
-					case 4: result = daoFactory.getEventDao().cancelRequest(eventId, userId); break;
-					case 5: result = daoFactory.getEventDao().approveUser(eventId, userId); break;
-					case 6: result = daoFactory.getEventDao().blockUser(eventId, userId); break;
-					case 7: result = daoFactory.getEventDao().removeUser(eventId, userId); break;
-					default: return result;
-				}
+		if(participant.getEventId() != 0 && participant.getUserId() != 0) {
+			int eventId = participant.getEventId();
+			int userId = participant.getUserId();
+			switch (ActionEnum.fromInt(participant.getAction())) {
+				case ENTER_EVENT:
+					result = daoFactory.getEventDao().joinEvent(eventId, userId, 1); 
+					break;
+				case SEND_REQUEST: 
+					result = daoFactory.getEventDao().joinEvent(eventId, userId, 2); 
+					break;
+				case APPROVE_USER: 
+					result = daoFactory.getEventDao().changeStatus(eventId, userId, 1);
+					break;
+				case BLOCK_USER: 
+					result = daoFactory.getEventDao().changeStatus(eventId, userId, 3);
+					break;
+				case REMOVE_USER: 
+					result = daoFactory.getEventDao().removeUser(eventId, userId); 
+					break;
+				default: return result;
 			}
 		}
 		return result;

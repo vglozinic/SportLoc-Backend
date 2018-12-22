@@ -8,21 +8,14 @@ import java.sql.SQLException;
 
 import beans.CommentBean;
 import beans.UserBean;
+import helper.DaoHelper;
 
-public class UserDao {
+public class UserDao extends DaoHelper {
 	
 	private DaoFactory daoFactory;
 	
 	public UserDao(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
-	}
-	
-	public void closeConnection (Connection connection) {
-		try {
-			connection.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public boolean getData(String attribute, String sql) {
@@ -83,7 +76,7 @@ public class UserDao {
 			query.setInt(1, comment.getUserId());
 			query.setInt(2, comment.getCommentatorId());
 			query.setString(3, comment.getComment());
-			query.setBoolean(4, comment.getVote());
+			query.setBoolean(4, comment.isVote());
 			
 			if(query.executeUpdate() != 0) {
 				result = true;
@@ -244,7 +237,7 @@ public class UserDao {
 			query.setString(4, user.getEmail());
 			query.setString(5, user.getSalt());
 			query.setString(6, user.getPassword());
-			query.setBoolean(7, user.getGender());
+			query.setBoolean(7, user.isGender());
 			query.setDate(8, Date.valueOf(user.getDob()));
 	
 			if(query.executeUpdate() != 0) {

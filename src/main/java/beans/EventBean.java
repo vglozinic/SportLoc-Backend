@@ -2,7 +2,9 @@ package beans;
 
 import java.io.Serializable;
 
-public class EventBean {
+import helper.BeanHelper;
+
+public class EventBean extends BeanHelper implements Serializable {
 	
 	public static final long serialVersionUID = 1L;
 	
@@ -39,7 +41,7 @@ public class EventBean {
 			String city,
 			int userId,
 			String username) {
-		super ();
+		super();
 		this.eventId = eventId;
 		this.name = name;
 		this.start = start;
@@ -55,13 +57,6 @@ public class EventBean {
 		this.city = city;
 		this.userId = userId;
 		this.username = username;
-	}
-	
-	private String resolveNull(String string) {
-		if (string == null) {
-			string = "";
-		}
-		return string;
 	}
 	
 	public int getEventId() {
@@ -112,7 +107,7 @@ public class EventBean {
 		this.description = description;
 	}
 	
-	public boolean getOpen() {
+	public boolean isOpen() {
 		return open;
 	}
 	

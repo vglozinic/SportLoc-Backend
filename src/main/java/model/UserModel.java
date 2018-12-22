@@ -24,15 +24,6 @@ public class UserModel {
 		return number.matches(regex);
 	}
 	
-	public boolean checkBoolean(String bool) {
-		if(bool.equals("true") || bool.equals("false")) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-	
 	public int checkParameters(Map<String, String[]> parameters) {
 		int result = 0;
 		if(parameters != null && !parameters.isEmpty() && parameters.containsKey("username") && parameters.containsKey("password")) {
@@ -106,7 +97,6 @@ public class UserModel {
 		return result;
 	}
 	
-	
 	public boolean updateProfile(UserBean user) {
 		boolean result = false;
 		if(user.getUserId() != 0) {
@@ -155,22 +145,15 @@ public class UserModel {
 		return result;
 	}
 	
-	public boolean resolveComment(Map<String, String[]> parameters) {
+	public boolean resolveComment(CommentBean comment) {
 		boolean result = false;
-		if(parameters != null && !parameters.isEmpty() && parameters.containsKey("commentator") && parameters.containsKey("user") && parameters.containsKey("action")) {
-			if(checkInteger(parameters.get("commentator")[0]) && checkInteger(parameters.get("user")[0])) {
-				int commentatorId = Integer.parseInt(parameters.get("commentator")[0]);
-				int userId = Integer.parseInt(parameters.get("user")[0]);
-				if(checkBoolean(parameters.get("action")[0])) {
-					boolean action = Boolean.parseBoolean(parameters.get("action")[0]);
-					if(action) {
-						result = daoFactory.getUserDao().deleteComment(userId, commentatorId);
-					}
-					else {
-						result = daoFactory.getUserDao().checkComment(userId, commentatorId);
-					}
-				}
+		if(comment.getUserId() != 0 && comment.getCommentatorId() != 0) {
+			if(comment.isAction()) {
+				result = daoFactory.getUserDao().deleteComment(comment.getUserId(), comment.getCommentatorId());
 			}
+			else {
+				result = daoFactory.getUserDao().checkComment(comment.getUserId(), comment.getCommentatorId());
+			}	
 		}
 		return result;
 	}
