@@ -8,21 +8,14 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 import beans.EventBean;
+import helper.DaoHelper;
 
-public class EventDao {
+public class EventDao extends DaoHelper {
 
 	private DaoFactory daoFactory;
 
 	public EventDao(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
-	}
-	
-	public void closeConnection (Connection connection) {
-		try {
-			connection.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public ResultSet getList(String sql) {
@@ -195,33 +188,13 @@ public class EventDao {
 		return result;
 	}
 	
-	public boolean enterEvent(int eventId, int userId) {
-		String sql = "INSERT INTO public.participant (id_event, id_user, owner, id_status) VALUES (?, ?, FALSE, 1)";
+	public boolean joinEvent(int eventId, int userId, int status) {
+		String sql = "INSERT INTO public.participant (id_event, id_user, owner, id_status) VALUES (?, ?, FALSE, " + status + ")";
 		return resolveParticipant(eventId, userId, sql);
 	}
-	
-	public boolean leaveEvent(int eventId, int userId) {
-		String sql = "DELETE FROM public.participant WHERE id_event = ? AND id_user = ? AND id_status = 1";
-		return resolveParticipant(eventId, userId, sql);
-	}
-	
-	public boolean sendRequest(int eventId, int userId) {
-		String sql = "INSERT INTO public.participant (id_event, id_user, owner, id_status) VALUES (?, ?, FALSE, 2)";
-		return resolveParticipant(eventId, userId, sql);
-	}
-	
-	public boolean cancelRequest(int eventId, int userId) {
-		String sql = "DELETE FROM public.participant WHERE id_event = ? AND id_user = ? AND id_status = 2";
-		return resolveParticipant(eventId, userId, sql);
-	}
-	
-	public boolean approveUser(int eventId, int userId) {
-		String sql = "UPDATE public.participant SET id_status = 1 WHERE id_event = ? AND id_user = ?";
-		return resolveParticipant(eventId, userId, sql);
-	}
-	
-	public boolean blockUser(int eventId, int userId) {
-		String sql = "UPDATE public.participant SET id_status = 3 WHERE id_event = ? AND id_user = ?";
+		
+	public boolean changeStatus (int eventId, int userId, int status) {
+		String sql = "UPDATE public.participant SET id_status = " + status + " WHERE id_event = ? AND id_user = ?";
 		return resolveParticipant(eventId, userId, sql);
 	}
 	
@@ -242,7 +215,7 @@ public class EventDao {
 		query.setString(4, event.getAddress());
 		query.setString(5, event.getDescription());
 		query.setInt(6, event.getCapacity());
-		query.setBoolean(7, event.getOpen());
+		query.setBoolean(7, event.isOpen());
 		query.setInt(8, event.getCityId());
 		query.setInt(9, event.getSportId());
 		return query;
