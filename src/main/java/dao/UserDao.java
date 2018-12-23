@@ -245,7 +245,7 @@ public class UserDao {
 			query.setString(5, user.getSalt());
 			query.setString(6, user.getPassword());
 			query.setBoolean(7, user.getGender());
-			query.setDate(8, Date.valueOf(user.getDob()));
+			query.setDate(8, user.getDob());
 	
 			if(query.executeUpdate() != 0) {
 				result = true;
