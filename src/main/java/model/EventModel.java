@@ -112,7 +112,7 @@ public class EventModel {
 		if(participant.getEventId() != 0 && participant.getUserId() != 0) {
 			int eventId = participant.getEventId();
 			int userId = participant.getUserId();
-			switch (ActionEnum.fromInt(participant.getAction())) {
+			switch (ActionEnum.fromInt(participant.isAction())) {
 				case ENTER_EVENT:
 					result = daoFactory.getEventDao().joinEvent(eventId, userId, 1); 
 					break;
