@@ -72,7 +72,7 @@ public class ParticipantBean extends BeanHelper implements Serializable {
 		this.status = status;
 	}
 	
-	public int getAction() {
+	public int isAction() {
 		return action;
 	}
 	
