@@ -1,12 +1,17 @@
 package beans;
 
-public class CommentBean {
+import java.io.Serializable;
+
+import helper.BeanHelper;
+
+public class CommentBean extends BeanHelper implements Serializable {
 	
 	public static final long serialVersionUID = 1L;
 	
 	private int userId;
 	private int commentatorId;
 	private boolean vote;
+	private boolean action;
 	private String comment;
 	private String commentator;
 	
@@ -16,20 +21,15 @@ public class CommentBean {
 			boolean vote,
 			String comment,
 			int commentatorId,
-			String commentator) {
+			String commentator,
+			boolean action) {
 		super();
 		this.userId = userId;
 		this.vote = vote;
 		this.comment = comment;
 		this.commentatorId = commentatorId;
 		this.commentator = commentator;
-	}
-	
-	private String resolveNull(String string) {
-		if(string == null) {
-			string = "";
-		}
-		return string;
+		this.action = action;
 	}
 	
 	public int getUserId() {
@@ -40,7 +40,7 @@ public class CommentBean {
 		this.userId = userId;
 	}
 	
-	public boolean getVote() {
+	public boolean isVote() {
 		return vote;
 	}
 	
@@ -70,6 +70,14 @@ public class CommentBean {
 	
 	public void setCommentator(String commentator) {
 		this.commentator = commentator;
+	}
+	
+	public boolean isAction() {
+		return action;
+	}
+	
+	public void setAction(boolean action) {
+		this.action = action;
 	}
 
 }

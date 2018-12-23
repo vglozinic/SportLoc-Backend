@@ -69,11 +69,11 @@
 	</servlet>
 	<servlet>
 		<servlet-name>ResolveCommentServlet</servlet-name>
-		<servlet-class>servlet.get.ResolveCommentServlet</servlet-class>
+		<servlet-class>servlet.post.ResolveCommentServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>ResolveParticipantServlet</servlet-name>
-		<servlet-class>servlet.get.ResolveParticipantServlet</servlet-class>
+		<servlet-class>servlet.post.ResolveParticipantServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>

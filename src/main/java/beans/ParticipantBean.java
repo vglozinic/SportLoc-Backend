@@ -1,12 +1,17 @@
 package beans;
 
-public class ParticipantBean {
+import java.io.Serializable;
+
+import helper.BeanHelper;
+
+public class ParticipantBean extends BeanHelper implements Serializable {
 	
 	public static final long serialVersionUID = 1L;
 	
 	private int eventId;
 	private int userId;
 	private int statusId;
+	private int action;
 	private String username;
 	private String status;
 	
@@ -16,20 +21,15 @@ public class ParticipantBean {
 			int userId,
 			String username,
 			int statusId,
-			String status) {
+			String status,
+			int action) {
 		super();
 		this.eventId = eventId;
 		this.userId = userId;
 		this.username = username;
 		this.statusId = statusId;
 		this.status = status;
-	}
-
-	private String resolveNull(String string) {
-		if(string == null) {
-			string = "";
-		}
-		return string;
+		this.action = action;
 	}
 	
 	public int getEventId() {
@@ -70,6 +70,14 @@ public class ParticipantBean {
 	
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	
+	public int getAction() {
+		return action;
+	}
+	
+	public void setAction(int action) {
+		this.action = action;
 	}
 
 }

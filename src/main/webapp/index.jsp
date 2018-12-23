@@ -33,9 +33,22 @@
 			<li>username : <i>mkovac</i></li>
 			<li>password : <i>rukeuzrak123</i></li>
 		</ul>
-		Returns user ID for login is succussful or 0 if failed
+		Returns UserBean of user if login is succussful:
 		<ul>
-			<li>userId : 0 or user ID (numerical value)</li>
+			<li>userId: <i>8</i></li>
+			<li>upvote: <i>0</i></li>
+			<li>downvote: <i>0</i></li>
+			<li>gender: <i>true</i></li>
+			<li>name: "Slavica"</li>
+			<li>surname: "Kovač"</li>
+			<li>username: "skovac"</li>
+			<li>email: "slavica.kovac@gmail.com"</li>
+			<li>description: "Neki opis ovog korisnika"</li>
+			<li>dob: "2000-12-06"</li>
+		</ul>
+		Returns JSON Object if login failed:
+		<ul>
+			<li>userId : <i>0</i></li>
 		</ul>
 	</p>
 	<hr>
@@ -275,10 +288,10 @@
 	<p>
 		<h2>Check / Delete Comment</h2>
 		Path: <i>sportloc-backend.herokuapp.com/resolveComment</i><br>
-		Checks if comment exists or deletes it with GET parameters which are:<br>
+		Checks if comment exists or deletes it with partial POST CommentBean:<br>
 		<ul>
-			<li>commentator : <i>10</i></li>
-			<li>user : <i>20</i></li>
+			<li>commentatorId : <i>10</i></li>
+			<li>userId : <i>20</i></li>
 			<li>action: <i>true</i> if deleting, <i>false</i> if checking</li>
 		</ul>
 		Returns JSON Object with boolean success of operation:
@@ -290,21 +303,22 @@
 	<p>
 		<h2>Resolve Participant</h2>
 		Path: <i>sportloc-backend.herokuapp.com/resolveParticipant</i><br>
-		Performs one event application action with GET parameters which are:<br>
+		Performs event application action with partial POST ParticipantBean:<br>
 		<ul>
-			<li>event : <i>25</i></li>
-			<li>user : <i>23</i></li>
-			<li>action : <i>1-7</i></li>
+			<li>eventId : <i>25</i></li>
+			<li>userId : <i>23</i></li>
+			<li>action : <i>1-5</i></li>
 		</ul>
 		List of available actions and their codes:
 		<ul>
 			<li>1 - Enter open event</li>
-			<li>2 - Leave open event</li>
-			<li>3 - Request enterance on closed event</li>
-			<li>4 - Cancel request on closed event</li>
-			<li>5 - Approve pending or blocked user for event</li> 
-			<li>6 - Block user from your event or pending list</li>
-			<li>7 - Remove user from your event or blocked list</li>
+			<li>2 - Request joining closed event</li>
+			<li>3 - Approve pending or blocked user for event</li>
+			<li>4 - Block user from your event or pending list</li>
+			<li>5 - Several options are put into this operation:<br>
+					&nbsp; * Leave open event you are in<br>
+					&nbsp; * Cancel request on closed event<br> 
+					&nbsp; * Remove user from your event or blocked list</li>
 		</ul>
 		Returns JSON Object with boolean success of operation:
 		<ul>

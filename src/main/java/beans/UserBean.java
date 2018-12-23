@@ -2,7 +2,9 @@ package beans;
 
 import java.io.Serializable;
 
-public class UserBean implements Serializable {
+import helper.BeanHelper;
+
+public class UserBean extends BeanHelper implements Serializable {
 	
 	public static final long serialVersionUID = 1L;
 	
@@ -44,13 +46,6 @@ public class UserBean implements Serializable {
 		this.gender = gender;
 		this.dob = dob;
 		this.description = description;
-	}
-	
-	private String resolveNull(String string) {
-		if(string == null) {
-			string = "";
-		}
-		return string;
 	}
 	
 	public int getUserId() {
@@ -109,7 +104,7 @@ public class UserBean implements Serializable {
 		this.password = password;
 	}
 	
-	public boolean getGender() {
+	public boolean isGender() {
 		return gender;
 	}
 	
