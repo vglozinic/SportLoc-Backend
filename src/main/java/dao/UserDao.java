@@ -237,8 +237,9 @@ public class UserDao extends DaoHelper {
 			query.setString(4, user.getEmail());
 			query.setString(5, user.getSalt());
 			query.setString(6, user.getPassword());
-			query.setBoolean(7, user.isGender());
-			query.setDate(8, Date.valueOf(user.getDob()));
+      date_of_birth_type_fix
+			query.setBoolean(7, user.getGender());
+			query.setDate(8, user.getDob());
 	
 			if(query.executeUpdate() != 0) {
 				result = true;
