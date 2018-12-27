@@ -45,7 +45,7 @@
 	</servlet>
 	<servlet>
 		<servlet-name>EventListServlet</servlet-name>
-		<servlet-class>servlet.get.EventListServlet</servlet-class>
+		<servlet-class>servlet.post.EventListServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>ParticipantListServlet</servlet-name>

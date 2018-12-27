@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import beans.EventBean;
+import beans.FilterBean;
 import beans.ParticipantBean;
 import dao.DaoFactory;
 import helper.ActionEnum;
+import helper.StatusEnum;
 
 public class EventModel {
 	
@@ -35,10 +37,9 @@ public class EventModel {
 		return result;
 	}
 	
-	public ArrayList<EventBean> getEventList() {
+	public ArrayList<EventBean> getEventList(FilterBean filter) {
 		ArrayList<EventBean> result = new ArrayList<EventBean>();
-		ResultSet data = daoFactory.getEventDao().getEvents();
-		
+		ResultSet data = daoFactory.getEventDao().getEvents(filter);
 		if(data != null) {
 			try {
 				while(data.next()) {
@@ -112,18 +113,18 @@ public class EventModel {
 		if(participant.getEventId() != 0 && participant.getUserId() != 0) {
 			int eventId = participant.getEventId();
 			int userId = participant.getUserId();
-			switch (ActionEnum.fromInt(participant.getAction())) {
+			switch (participant.getAction()) {
 				case ENTER_EVENT:
-					result = daoFactory.getEventDao().joinEvent(eventId, userId, 1); 
+					result = daoFactory.getEventDao().joinEvent(eventId, userId, StatusEnum.getValue(StatusEnum.APPROVED));
 					break;
 				case SEND_REQUEST: 
-					result = daoFactory.getEventDao().joinEvent(eventId, userId, 2); 
+					result = daoFactory.getEventDao().joinEvent(eventId, userId, StatusEnum.getValue(StatusEnum.PENDING)); 
 					break;
 				case APPROVE_USER: 
-					result = daoFactory.getEventDao().changeStatus(eventId, userId, 1);
+					result = daoFactory.getEventDao().changeStatus(eventId, userId, StatusEnum.getValue(StatusEnum.APPROVED));
 					break;
 				case BLOCK_USER: 
-					result = daoFactory.getEventDao().changeStatus(eventId, userId, 3);
+					result = daoFactory.getEventDao().changeStatus(eventId, userId, StatusEnum.getValue(StatusEnum.BLOCKED));
 					break;
 				case REMOVE_USER: 
 					result = daoFactory.getEventDao().removeUser(eventId, userId); 

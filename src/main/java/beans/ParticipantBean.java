@@ -2,6 +2,7 @@ package beans;
 
 import java.io.Serializable;
 
+import helper.ActionEnum;
 import helper.BeanHelper;
 
 public class ParticipantBean extends BeanHelper implements Serializable {
@@ -11,7 +12,7 @@ public class ParticipantBean extends BeanHelper implements Serializable {
 	private int eventId;
 	private int userId;
 	private int statusId;
-	private int action;
+	private ActionEnum action;
 	private String username;
 	private String status;
 	
@@ -22,7 +23,7 @@ public class ParticipantBean extends BeanHelper implements Serializable {
 			String username,
 			int statusId,
 			String status,
-			int action) {
+			ActionEnum action) {
 		super();
 		this.eventId = eventId;
 		this.userId = userId;
@@ -72,11 +73,11 @@ public class ParticipantBean extends BeanHelper implements Serializable {
 		this.status = status;
 	}
 	
-	public int getAction() {
+	public ActionEnum getAction() {
 		return action;
 	}
 	
-	public void setAction(int action) {
+	public void setAction(ActionEnum action) {
 		this.action = action;
 	}
 
