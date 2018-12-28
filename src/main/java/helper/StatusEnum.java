@@ -15,12 +15,4 @@ public enum StatusEnum {
 		return status;
 	}
 	
-	public static int getValue(StatusEnum status) {
- 		for (StatusEnum operation : StatusEnum.values()) {
- 			if(operation == status) {
- 				return operation.getStatus(); 
- 			}
- 		}
- 		return 0;
- 	}
 }

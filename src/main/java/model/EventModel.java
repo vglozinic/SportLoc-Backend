@@ -115,16 +115,16 @@ public class EventModel {
 			int userId = participant.getUserId();
 			switch (participant.getAction()) {
 				case ENTER_EVENT:
-					result = daoFactory.getEventDao().joinEvent(eventId, userId, StatusEnum.getValue(StatusEnum.APPROVED));
+					result = daoFactory.getEventDao().joinEvent(eventId, userId, StatusEnum.APPROVED.getStatus());
 					break;
 				case SEND_REQUEST: 
-					result = daoFactory.getEventDao().joinEvent(eventId, userId, StatusEnum.getValue(StatusEnum.PENDING)); 
+					result = daoFactory.getEventDao().joinEvent(eventId, userId, StatusEnum.PENDING.getStatus()); 
 					break;
 				case APPROVE_USER: 
-					result = daoFactory.getEventDao().changeStatus(eventId, userId, StatusEnum.getValue(StatusEnum.APPROVED));
+					result = daoFactory.getEventDao().changeStatus(eventId, userId, StatusEnum.APPROVED.getStatus());
 					break;
 				case BLOCK_USER: 
-					result = daoFactory.getEventDao().changeStatus(eventId, userId, StatusEnum.getValue(StatusEnum.BLOCKED));
+					result = daoFactory.getEventDao().changeStatus(eventId, userId, StatusEnum.BLOCKED.getStatus());
 					break;
 				case REMOVE_USER: 
 					result = daoFactory.getEventDao().removeUser(eventId, userId); 

@@ -1,6 +1,7 @@
 package servlet.post;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,10 +24,9 @@ public class RegistrationServlet extends HttpServletHelper {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Gson gson = new Gson();
-		JSONObject result = new JSONObject();
-		UserBean user = gson.fromJson(getRequestBody(request), UserBean.class);		
-		result.put("success", (new UserModel().registerUser(user)));
-		sendResponse(response, result);
+		UserBean user = gson.fromJson(getRequestBody(request), UserBean.class);	
+		HashMap<String, Object> result = new UserModel().registerUser(user);
+		sendResponse(response, gson.toJson(result));
 	}
 
 }
