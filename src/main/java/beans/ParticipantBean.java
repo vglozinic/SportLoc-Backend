@@ -72,7 +72,7 @@ public class ParticipantBean extends BeanHelper implements Serializable {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
+	
 	public ActionEnum getAction() {
 		return action;
 	}

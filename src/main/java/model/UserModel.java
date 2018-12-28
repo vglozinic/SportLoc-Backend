@@ -3,12 +3,14 @@ package model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import beans.CommentBean;
 import beans.UserBean;
 import dao.DaoFactory;
 import helper.MailSender;
+import helper.Message;
 import helper.Password;
 
 public class UserModel {
@@ -45,15 +47,37 @@ public class UserModel {
 		return daoFactory.getUserDao().checkEmail(email);
 	}
 	
-	public boolean registerUser(UserBean user) {
-		boolean result = false;
+	public HashMap<String, Object> registerUser(UserBean user) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("success", false);
+		result.put("message", Message.REGISTRATION_FAIL);
 		if(!user.getEmail().isEmpty() && !user.getUsername().isEmpty()) {
-			user.setSalt(Password.getSalt());
-			user.setPassword(Password.getPassword(user.getPassword(), user.getSalt()));
-			
-			result = daoFactory.getUserDao().registerUser(user);
-			if (result) {
-				MailSender.sendEmail(user.getEmail(), "Registracija SportLoc", "Registracija za korisnicko ime " + user.getUsername() + " je gotova! Ovo je automatski e-mail potvrde.");
+			boolean username = checkUser(user.getUsername());
+			boolean email = checkEmail(user.getEmail());
+			if(!username && !email) {
+				user.setSalt(Password.getSalt());
+				user.setPassword(Password.getPassword(user.getPassword(), user.getSalt()));
+				if(daoFactory.getUserDao().registerUser(user)) {
+					result.replace("success", true);
+					result.replace("message", Message.REGISTRATION_SUCCESS);
+					MailSender.sendEmail(user.getEmail(), "Registracija SportLoc", "Registracija za korisnicko ime " + user.getUsername() + " je gotova! Ovo je automatski e-mail potvrde.");
+				}
+				else {
+					result.replace("message", Message.REGISTRATION_ERROR);
+				}
+			}
+			else {
+				if(username && email) {
+					result.replace("message", Message.USERNAME_EMAIL_EXIST);
+				}
+				else {
+					if(username) {
+						result.replace("message", Message.USERNAME_EXIST);
+					}
+					else {
+						result.replace("message", Message.EMAIL_EXIST);
+					}
+				}
 			}
 		}
 		return result;
