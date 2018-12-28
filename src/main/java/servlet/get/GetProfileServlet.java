@@ -23,7 +23,7 @@ public class GetProfileServlet extends HttpServletHelper {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Gson gson = new Gson();
-		UserBean user = new UserModel().getProfile(request.getParameter("id"));
+		UserBean user = new UserModel().getProfile(request.getParameter("username"), false);
 		String result = gson.toJson(user);
 		sendResponse(response, result);
 	}

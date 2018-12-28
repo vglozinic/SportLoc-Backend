@@ -48,24 +48,7 @@ public class UserDao extends DaoHelper {
 		String sql = "SELECT id_user FROM public.user WHERE email = ?";
 		return getData(email, sql);
 	}
-	
-	public ResultSet getLoginData(String username){
-		ResultSet result = null;
-		String sql = "SELECT id_user, password, salt FROM public.user WHERE username = ?";
-		Connection connection = daoFactory.getConnection();
-		
-		try {
-			PreparedStatement query  = connection.prepareStatement(sql);
-			query.setString(1, username);
-			result = query.executeQuery();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			closeConnection(connection);
-		}
-		return result;
-	}
-	
+
 	public boolean writeComment(CommentBean comment) {
 		boolean result = false;
 		String sql = "INSERT INTO public.comment (id_user, id_commentator, comment, vote) VALUES (?, ?, ?, ?)";
@@ -155,18 +138,18 @@ public class UserDao extends DaoHelper {
 		return result;
 	}
 	
-	public ResultSet getProfile (int id) {
+	public ResultSet getProfile (String username) {
 		ResultSet result = null;
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT DISTINCT ON (U.id_user) U.id_user, U.name, U.surname, U.username, U.email, U.gender, U.dob, U.description, ");
+		sql.append("SELECT DISTINCT ON (U.id_user) U.id_user, U.name, U.surname, U.username, U.email, U.salt, U.password, U.gender, U.dob, U.description, ");
 		sql.append("(SELECT COUNT(*) FROM public.comment WHERE public.comment.id_user = U.id_user AND public.comment.vote = TRUE) AS upvote, ");
 		sql.append("(SELECT COUNT(*) FROM public.comment WHERE public.comment.id_user = U.id_user AND public.comment.vote = FALSE) AS downvote ");
-		sql.append("FROM public.user U LEFT JOIN public.comment C ON U.id_user = C.id_user WHERE U.id_user = ?");
+		sql.append("FROM public.user U LEFT JOIN public.comment C ON U.id_user = C.id_user WHERE U.username = ?");
 		Connection connection = daoFactory.getConnection();
 				
 		try {
 			PreparedStatement query = connection.prepareStatement(sql.toString());
-			query.setInt(1, id);
+			query.setString(1, username);
 			result = query.executeQuery();
 		} catch (SQLException e) {
 			e.printStackTrace();

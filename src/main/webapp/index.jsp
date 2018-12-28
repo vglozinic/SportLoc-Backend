@@ -19,7 +19,7 @@
 			<li>dob : "2013-06-18" (YYYY-MM-DD)</li>
 			<li>gender : <i>true</i> if male, <i>false</i> if female</li>
 		</ul>
-		Returnes JSON Object with single boolean:
+		Returns JSON Object with boolean success of operation:
 		<ul>
 			<li>success : with values <i>true</i> or <i>false</i></li>
 		</ul>
@@ -46,7 +46,7 @@
 			<li>description: "Neki opis ovog korisnika"</li>
 			<li>dob: "2000-12-06"</li>
 		</ul>
-		Returns JSON Object if login failed:
+		Returns JSON Object with attribute if login failed:
 		<ul>
 			<li>userId : <i>0</i></li>
 		</ul>
@@ -118,7 +118,7 @@
 		<ul>
 			<li>name : "Neki događaj"</li>
 			<li>start : "18:00 21.12.2018."</li>
-			<li>end : "20:00 01.01.2020." <b>optional</b></li>
+			<li>end : "20:00 01.01.2020." (optional)</li>
 			<li>address : "Pavlinska 2, Varaždin"</li>
 			<li>description : "Opis ovog događaja"</li>
 			<li>capacity : <i>10</i></li>
@@ -127,11 +127,11 @@
 			<li>sportId : <i>42</i></li>
 			<li>userId : <i>4</i></li>
 		</ul>
-		Returnes JSON Object with single boolean:
+		Returns JSON Object with boolean success of operation:
 		<ul>
 			<li>success : with values <i>true</i> or <i>false</i></li>
 		</ul>
-		Optional parameter <i>end</i> is only sent if event has end time
+		Optional attribute <i>end</i> is only sent if event has end time
 	</p>
 	<hr>
 	<p>
@@ -141,7 +141,7 @@
 		<ul>
 			<li>name : "Neki događaj"</li>
 			<li>start : "18:00 21.12.2018."</li>
-			<li>end : "20:00 01.01.2020." <b>optional</b></li>
+			<li>end : "20:00 01.01.2020." (optional)</li>
 			<li>address : "Pavlinska 2, Varaždin"</li>
 			<li>description : "Opis ovog događaja"</li>
 			<li>capacity : <i>10</i></li>
@@ -154,7 +154,7 @@
 		<ul>
 			<li>success : with values <i>true</i> or <i>false</i></li>
 		</ul>
-		Optional parameter <i>end</i> is sent only if event has end time
+		Optional attribute <i>end</i> is sent only if event has end time
 	</p>
 	<hr>
 	<p>
@@ -173,7 +173,52 @@
 	<p>
 		<h2>Event List</h2>
 		Path: <i>sportloc-backend.herokuapp.com/getEvents</i><br>
-		Method GET that requires nothing and returns list of EventBean JSON objects:<br>
+		Requires POST JSON FilterBean object for following settings:<br><br>
+		&emsp;&nbsp;Return all events that exist in database (testing)<br>
+		<ul>
+			<li>userId : <i>0</i></li>
+			<li>sportId : <i>0</i></li>
+			<li>cityId : <i>0</i></li>
+			<li>owner : <i>false</i></li>
+			<li>full : <i>true</i></li>
+		</ul>
+		&emsp;&nbsp;Return all events that I haven't created (starting screen)<br>
+		<ul>
+			<li>userId : <i>17</i></li>
+			<li>sportId : <i>0</i></li>
+			<li>cityId : <i>0</i></li>
+			<li>owner : <i>false</i></li>
+			<li>full : <i>true</i></li>
+		</ul>
+		&emsp;&nbsp;Return all events that I have created (my events)<br>
+		<ul>
+			<li>userId : <i>17</i></li>
+			<li>sportId : <i>0</i></li>
+			<li>cityId : <i>0</i></li>
+			<li>owner : <i>true</i></li>
+			<li>full : <i>true</i></li>
+		</ul>
+		&emsp;&nbsp;Return all events that match filters (filter & search)<br>
+		<ul>
+			<li>userId : <i>17</i></li>
+			<li>sportId : <i>42</i></li>
+			<li>cityId : <i>24</i></li>
+			<li>owner : <i>false</i></li>
+			<li>full : <br>
+				<i>true</i> if filled out events are included in event list<br>
+				<i>false</i> if only events that have vacant places are selected</li>
+			<li>parcitipant : (optional)<br>
+				<i>true</i> if only events that user is participating in are shown<br>
+				<i>false</i> if only events that user is not participating in are shown</li>
+			<li>open : (optional)<br>
+				<i>true</i> if event list shows only open events<br>
+				<i>false</i> if event list shows only closed events</li>
+			<br>User ID must be logged in user in all cases except first
+			<br>Boolean values must be as stated above except filter attributes
+			<br>Optional parameters are sent only if filter is being applied
+			<br>Filter list doesn't include events created by the logged in user
+		</ul>
+		Returns list of EventBean JSON objects or empty list:<br>
 		<ul>
 			<li>eventId : <i>22</i></li>
 			<li>sportId : <i>95</i></li>
@@ -190,8 +235,8 @@
 			<li>sport : "Nogomet"</li>
 			<li>city : "Varaždin"</li>
 			<li>username": "testuser"</li>
+			<br>Attribute <i>end</i> won't be returned if event doesn't have ending
 		</ul>
-		Attribute <i>end</i> won't be returned if event doesn't have ending
 	</p>
 	<hr>
 	<p>
@@ -214,9 +259,9 @@
 	<p>
 		<h2>Get Profile</h2>
 		Path: <i>sportloc-backend.herokuapp.com/getProfile</i><br>
-		Requires GET parametar of user ID which is:<br>
+		Requires GET parametar of user which is:<br>
 		<ul>
-			<li>id : <i>8</i></li>
+			<li>username : <i>"mkovac"</i></li>
 		</ul>
 		Returns UserBean JSON object with following values:<br>
 		<ul>
@@ -307,18 +352,18 @@
 		<ul>
 			<li>eventId : <i>25</i></li>
 			<li>userId : <i>23</i></li>
-			<li>action : <i>1-5</i></li>
+			<li>action : </li>
 		</ul>
-		List of available actions and their codes:
+		&emsp;&nbsp;List of available actions and their enum values:
 		<ul>
-			<li>1 - Enter open event</li>
-			<li>2 - Request joining closed event</li>
-			<li>3 - Approve pending or blocked user for event</li>
-			<li>4 - Block user from your event or pending list</li>
-			<li>5 - Several options are put into this operation:<br>
-					&nbsp; * Leave open event you are in<br>
-					&nbsp; * Cancel request on closed event<br> 
-					&nbsp; * Remove user from your event or blocked list</li>
+			<li><i>ENTER_EVENT</i> - Enter open event</li>
+			<li><i>SEND_REQUEST</i> - Request joining closed event</li>
+			<li><i>APPROVE_USER</i> - Approve pending or blocked user for event</li>
+			<li><i>BLOCK_USER</i> - Block user from your event or pending list</li>
+			<li><i>REMOVE_USER</i> - Several options are put into this operation:<br>
+				&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp; * Leave open event you are in<br>
+				&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp; * Cancel request on closed event<br> 
+				&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp; * Remove user from your event or blocked list</li>
 		</ul>
 		Returns JSON Object with boolean success of operation:
 		<ul>

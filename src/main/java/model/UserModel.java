@@ -24,26 +24,14 @@ public class UserModel {
 		return number.matches(regex);
 	}
 	
-	public int checkParameters(Map<String, String[]> parameters) {
-		int result = 0;
+	public UserBean loginUser(Map<String, String[]> parameters) {
+		UserBean result = new UserBean();
 		if(parameters != null && !parameters.isEmpty() && parameters.containsKey("username") && parameters.containsKey("password")) {
-			result = checkLoginData(parameters.get("username")[0], parameters.get("password")[0]);
-		}
-		return result;
-	}
-	
-	private int checkLoginData(String username, String password) {
-		int result = 0;
-		ResultSet data = daoFactory.getUserDao().getLoginData(username);
-		
-		if (data != null) {
-			try {
-				data.next();
-				if(Password.checkPassword(password, data.getString(2), data.getString(3))) {
-					result = data.getInt(1);
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
+			UserBean profile = getProfile(parameters.get("username")[0], true);
+			if(Password.checkPassword(parameters.get("password")[0], profile.getPassword(), profile.getSalt())) {
+				profile.setSalt(null);
+				profile.setPassword(null);
+				result = profile;
 			}
 		}
 		return result;
@@ -71,27 +59,29 @@ public class UserModel {
 		return result;
 	}
 	
-	public UserBean getProfile (String id) {
+	public UserBean getProfile(String username, boolean login) {
 		UserBean result = new UserBean();
-		if(checkInteger(id)) {
-			ResultSet data = daoFactory.getUserDao().getProfile(Integer.parseInt(id));
-			if (data != null) {
-				try {
-					while (data.next()) {
-						result.setUserId(data.getInt("id_user"));
-						result.setName(data.getString("name"));
-						result.setSurname(data.getString("surname"));
-						result.setUsername(data.getString("username"));
-						result.setEmail(data.getString("email"));
-						result.setGender(data.getBoolean("gender"));
-						result.setDob(data.getString("dob"));
-						result.setDescription(data.getString("description"));
-						result.setUpvote(data.getInt("upvote"));
-						result.setDownvote(data.getInt("downvote"));
+		ResultSet data = daoFactory.getUserDao().getProfile(username);
+		if (data != null) {
+			try {
+				while (data.next()) {
+					result.setUserId(data.getInt("id_user"));
+					result.setName(data.getString("name"));
+					result.setSurname(data.getString("surname"));
+					result.setUsername(data.getString("username"));
+					result.setEmail(data.getString("email"));
+					if(login) {
+						result.setSalt(data.getString("salt"));
+						result.setPassword(data.getString("password"));
 					}
-				} catch (SQLException e) {
-					e.printStackTrace();
+					result.setGender(data.getBoolean("gender"));
+					result.setDob(data.getString("dob"));
+					result.setDescription(data.getString("description"));
+					result.setUpvote(data.getInt("upvote"));
+					result.setDownvote(data.getInt("downvote"));
 				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 		}
 		return result;

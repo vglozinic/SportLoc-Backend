@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 import beans.EventBean;
+import beans.FilterBean;
 import helper.DaoHelper;
 
 public class EventDao extends DaoHelper {
@@ -94,29 +95,51 @@ public class EventDao extends DaoHelper {
 		return result;
 	}
 	
-	public ResultSet getEvents() {
+	public ResultSet getEvents(FilterBean filter) {
 		ResultSet result = null;
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT DISTINCT ON (E.id_event) ");
 		sql.append("E.id_event, E.id_sport, E.id_city, U.id_user, E.capacity, ");
-		sql.append("(SELECT COUNT(*) FROM public.participant JOIN public.event ");
-		sql.append("ON public.event.id_event = public.participant.id_event ");
-		sql.append("WHERE public.participant.id_status = 1 ");
-		sql.append("AND public.participant.id_event = E.id_event) AS current, ");
-		sql.append("E.opened AS open, E.name, E.start_time AS start, E.end_time AS end, ");
-		sql.append("E.address, E.description, S.name AS sport, C.name AS city, U.username ");
+		sql.append("count_participants(E.id_event) AS current, E.opened AS open, ");
+		sql.append("E.name, E.start_time AS start, E.end_time AS end, E.address, ");
+		sql.append("E.description, S.name AS sport, C.name AS city, U.username ");
 		sql.append("FROM public.event E ");
 		sql.append("JOIN public.sport S ON E.id_sport = S.id_sport ");
 		sql.append("JOIN public.city C ON E.id_city = C.id_city ");
 		sql.append("JOIN public.participant P ON E.id_event = P.id_event ");
 		sql.append("JOIN public.user U ON P.id_user = U.id_user ");
 		sql.append("WHERE P.owner = TRUE ");
+		if(filter.getUserId() != 0) {
+			if(filter.isOwner()) {
+				sql.append("AND P.id_user = " + filter.getUserId() + " ");
+			} else {
+				if(filter.getSportId() != 0) {
+					sql.append("AND E.id_sport = " + filter.getSportId() + " ");
+				}
+				if(filter.getCityId() != 0) {
+					sql.append("AND E.id_city = " + filter.getCityId() + " ");
+				}
+				if(!filter.isFull()) {
+					sql.append("AND NOT E.capacity = count_participants(E.id_event) ");
+				}
+				if(filter.isParticipant() != null) {
+					sql.append("AND " + filter.getUserId());
+					if(!filter.isParticipant()) {
+						sql.append(" NOT");
+					}
+					sql.append(" IN (SELECT id_user FROM public.participant WHERE id_event = E.id_event) ");
+				}
+				if(filter.isOpen() != null) {
+					sql.append("AND E.opened = " + filter.isOpen().toString().toUpperCase() + " ");
+				}
+				sql.append("AND NOT P.id_user = " + filter.getUserId() + " ");
+			}
+		}
 		sql.append("ORDER BY E.id_event DESC");
 		Connection connection = daoFactory.getConnection();
 		
 		try {
-			PreparedStatement query = connection.prepareStatement(sql.toString());
-			result = query.executeQuery();
+			result = connection.createStatement().executeQuery(sql.toString());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -134,7 +157,7 @@ public class EventDao extends DaoHelper {
 			PreparedStatement query = prepareEventStatement(event, sql, connection);
 			query.setInt(10, event.getEventId());
 
-			if (query.executeUpdate() != 0) {
+			if(query.executeUpdate() != 0) {
 				result = true;
 			}
 		} catch (SQLException e) {

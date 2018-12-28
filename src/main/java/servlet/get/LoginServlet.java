@@ -22,18 +22,10 @@ public class LoginServlet extends HttpServletHelper {
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		UserModel model = new UserModel();
-		Integer id = model.checkParameters(request.getParameterMap());
-		if(id != 0) {
-			Gson gson = new Gson();
-			UserBean user = model.getProfile(id.toString());
-			String result = gson.toJson(user);
-			sendResponse(response, result);
-		} else {
-			JSONObject result = new JSONObject();
-			result.put("userId", id);
-			sendResponse(response, result);
-		}
+		Gson gson = new Gson();
+		UserBean user = new UserModel().loginUser(request.getParameterMap());
+		String result = gson.toJson(user);
+		sendResponse(response, result);		
 	}
 
 }
