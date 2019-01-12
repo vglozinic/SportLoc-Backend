@@ -31,8 +31,6 @@ public class UserModel {
 		if(parameters != null && !parameters.isEmpty() && parameters.containsKey("username") && parameters.containsKey("password")) {
 			UserBean profile = getProfile(parameters.get("username")[0], true);
 			if(Password.checkPassword(parameters.get("password")[0], profile.getPassword(), profile.getSalt())) {
-				profile.setSalt(null);
-				profile.setPassword(null);
 				result = profile;
 			}
 		}

@@ -22,6 +22,7 @@
 		Returns JSON Object with boolean success of operation:
 		<ul>
 			<li>success : with values <i>true</i> or <i>false</i></li>
+			<li>message : "Poruka o izvršenoj operaciji"</li>
 		</ul>
 	</p>
 	<hr>
@@ -42,6 +43,8 @@
 			<li>name: "Slavica"</li>
 			<li>surname: "Kovač"</li>
 			<li>username: "skovac"</li>
+			<li>password: "f83hfhv0q23hf8hqhfqhfq3fh8h02fh"</li>
+			<li>salt: "bvz2v2zv2zvn2z08vn5z2vh20jfurj0f"</li>
 			<li>email: "slavica.kovac@gmail.com"</li>
 			<li>description: "Neki opis ovog korisnika"</li>
 			<li>dob: "2000-12-06"</li>
