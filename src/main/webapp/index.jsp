@@ -16,7 +16,7 @@
 			<li>username : "mkovac"</li>
 			<li>email : "miso.kovac@host.hr"</li>
 			<li>password : "rukeuzrak123"</li>
-			<li>dob : "2013-06-18" (YYYY-MM-DD)</li>
+			<li>dob : "1.12.2018." (D.M.YYYY.)</li>
 			<li>gender : <i>true</i> if male, <i>false</i> if female</li>
 		</ul>
 		Returns JSON Object with boolean success of operation:
@@ -47,7 +47,7 @@
 			<li>salt: "bvz2v2zv2zvn2z08vn5z2vh20jfurj0f"</li>
 			<li>email: "slavica.kovac@gmail.com"</li>
 			<li>description: "Neki opis ovog korisnika"</li>
-			<li>dob: "2000-12-06"</li>
+			<li>dob: "12.6.2000."</li>
 		</ul>
 		Returns JSON Object with attribute if login failed:
 		<ul>
@@ -120,8 +120,8 @@
 		Requires POST JSON EventBean Object which must contain parameters:<br>
 		<ul>
 			<li>name : "Neki događaj"</li>
-			<li>start : "18:00 21.12.2018."</li>
-			<li>end : "20:00 01.01.2020." (optional)</li>
+			<li>start : "21.12.2018. 18:00" (D.M.YYYY. HH:MM)</li>
+			<li>end : "1.1.2020. 20:00" (optional)</li>
 			<li>address : "Pavlinska 2, Varaždin"</li>
 			<li>description : "Opis ovog događaja"</li>
 			<li>capacity : <i>10</i></li>
@@ -143,8 +143,8 @@
 		Requires POST JSON EventBean Object which must contain parameters:<br>
 		<ul>
 			<li>name : "Neki događaj"</li>
-			<li>start : "18:00 21.12.2018."</li>
-			<li>end : "20:00 01.01.2020." (optional)</li>
+			<li>start : "21.12.2018. 18:00" (D.M.YYYY. HH:MM)</li>
+			<li>end : "1.1.2020. 20:00" (optional)</li>
 			<li>address : "Pavlinska 2, Varaždin"</li>
 			<li>description : "Opis ovog događaja"</li>
 			<li>capacity : <i>10</i></li>
@@ -231,8 +231,8 @@
 			<li>current : <i>2</i></li>
 			<li>open : <i>true</i> if open, <i>false</i> if closed</li>
 			<li>name : "Naslov događaja"</li>
-			<li>start : "18:00 21.12.2018."</li>
-			<li>end : "20:00 01.01.2020."</li>
+			<li>start : "21.12.2018. 18:00" </li>
+			<li>end : "01.01.2020. 20:00"</li>
 			<li>address : "Pavilnska 2, Varaždin"</li>
 			<li>description : "Kratak opis ovog događaja"</li>
 			<li>sport : "Nogomet"</li>
@@ -277,7 +277,7 @@
 			<li>username : "mkovac"</li>
 			<li>email : "miso.kovac@gmail.com"</li>
 			<li>description : "Kratak opis o meni"</li> 
-			<li>dob : "2013-06-18"</li>
+			<li>dob : "21.4.2000."</li>
 		</ul>
 		Attribute <i>description</i> won't be returned if description is empty
 	</p>
