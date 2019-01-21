@@ -21,6 +21,7 @@ public class HttpServletHelper extends HttpServlet {
 	public void sendResponse(HttpServletResponse response, Object json) {
 		try {
 			response.setContentType("application/json");
+			response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 			PrintWriter printer = response.getWriter();
 			printer.println(json.toString());
 		}

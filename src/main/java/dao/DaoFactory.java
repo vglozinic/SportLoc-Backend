@@ -25,5 +25,9 @@ public class DaoFactory {
 	public UserDao getUserDao() {
 		return new UserDao(this);
 	}
+	
+	public EventDao getEventDao() {
+		return new EventDao(this);
+	}
 
 }

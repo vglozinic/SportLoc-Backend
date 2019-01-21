@@ -47,5 +47,24 @@ public class Password {
 	public static boolean checkPassword(String password, String hash, String salt) {
 		return hash.equals(getPassword(password, salt));
 	}
+	
+	public static String generatePassword(int length) {
+		StringBuilder string = new StringBuilder(length);
+		for (int i = 0; i < length; i++) {
+			int c = RANDOM.nextInt(62);
+			if (c <= 9) {
+				string.append(String.valueOf(c));
+			}
+			else {
+				if (c < 36) {
+					string.append((char)('a' + c - 10));
+				}
+				else {
+					string.append((char)('A'+ c - 36));	
+				}
+			}
+		}
+		return string.toString();
+	}
 
 }

@@ -1,7 +1,6 @@
 package servlet.post;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,21 +11,22 @@ import org.json.JSONObject;
 
 import com.google.gson.Gson;
 
-import beans.UserBean;
+import beans.ParticipantBean;
 import helper.HttpServletHelper;
-import model.UserModel;
+import model.EventModel;
 
-@WebServlet(name = "RegistrationServlet", urlPatterns = "/register")
-public class RegistrationServlet extends HttpServletHelper {
+@WebServlet(name = "ResolveParticipantServlet", urlPatterns = {"/resolveParticipant"})
+public class ResolveParticipantServlet extends HttpServletHelper {
 	
 	private static final long serialVersionUID = 1L;
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Gson gson = new Gson();
-		UserBean user = gson.fromJson(getRequestBody(request), UserBean.class);	
-		HashMap<String, Object> result = new UserModel().registerUser(user);
-		sendResponse(response, gson.toJson(result));
+		JSONObject result = new JSONObject();
+		ParticipantBean participant = gson.fromJson(getRequestBody(request), ParticipantBean.class);
+		result.put("success", new EventModel().resolveParticipant(participant));
+		sendResponse(response, result);
 	}
 
 }

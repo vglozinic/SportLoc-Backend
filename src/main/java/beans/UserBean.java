@@ -2,13 +2,16 @@ package beans;
 
 import java.io.Serializable;
 
-public class UserBean implements Serializable {
+import helper.BeanHelper;
+
+public class UserBean extends BeanHelper implements Serializable {
 	
 	public static final long serialVersionUID = 1L;
 	
 	private int userId;
+	private int upvote;
+	private int downvote;
 	private boolean gender;
-	private String dob;
 	private String name;
 	private String surname;
 	private String username;
@@ -16,10 +19,11 @@ public class UserBean implements Serializable {
 	private String salt;
 	private String password;
 	private String description;
+	private String dob;
 	
 	public UserBean () {}
 	
-	public UserBean(int userID,
+	public UserBean(int userId,
 			String name,
 			String surname,
 			String username,
@@ -28,9 +32,11 @@ public class UserBean implements Serializable {
 			String password,
 			boolean gender, 
 			String dob, 
-			String description) {
+			String description,
+			int upvote,
+			int downvote) {
 		super();
-		this.userId = userID;
+		this.userId = userId;
 		this.name = name;
 		this.surname = surname;
 		this.username = username;
@@ -40,13 +46,6 @@ public class UserBean implements Serializable {
 		this.gender = gender;
 		this.dob = dob;
 		this.description = description;
-	}
-	
-	private String resolveNull(String string) {
-		if(string == null) {
-			string = "";
-		}
-		return string;
 	}
 	
 	public int getUserId() {
@@ -105,7 +104,7 @@ public class UserBean implements Serializable {
 		this.password = password;
 	}
 	
-	public boolean getGender() {
+	public boolean isGender() {
 		return gender;
 	}
 	
@@ -127,6 +126,22 @@ public class UserBean implements Serializable {
 	
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public int getUpvote() {
+		return upvote;
+	}
+	
+	public void setUpvote(int upvote) {
+		this.upvote = upvote;
+	}
+	
+	public int getDownvote() {
+		return downvote;
+	}
+	
+	public void setDownvote(int downvote) {
+		this.downvote = downvote;
 	}
 
 }

@@ -9,23 +9,20 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-import com.google.gson.Gson;
-
-import beans.UserBean;
 import helper.HttpServletHelper;
-import model.UserModel;
+import model.EventModel;
 
-@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
-public class LoginServlet extends HttpServletHelper {
+@WebServlet(name = "DeleteEventServlet", urlPatterns = {"/deleteEvent"})
+public class DeleteEventServlet extends HttpServletHelper {
 	
 	private static final long serialVersionUID = 1L;
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Gson gson = new Gson();
-		UserBean user = new UserModel().loginUser(request.getParameterMap());
-		String result = gson.toJson(user);
-		sendResponse(response, result);		
+		JSONObject result = new JSONObject();
+		EventModel event = new EventModel();
+		result.put("success", event.deleteEvent(request.getParameter("id")));
+		sendResponse(response, result);
 	}
 
 }
